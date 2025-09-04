@@ -22,6 +22,9 @@ const TerminalContainer: React.FC<TerminalContainerProps> = ({ isVisible, onClos
 
   const [isMotdVisible, setIsMotdVisible] = useState<boolean>(true);
   const [currentPath, setCurrentPath] = useState<string>(directoryState.getCurrentPath());
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   
   const terminalClasses = isVisible ? "scale-100 opacity-100" : "scale-0 opacity-0";
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -62,12 +65,51 @@ const TerminalContainer: React.FC<TerminalContainerProps> = ({ isVisible, onClos
     [prompts, promptText]
   );
 
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget || (e.target as HTMLElement).closest('.terminal-title')) {
+      setIsDragging(true);
+      setDragStart({ x: e.clientX - position.x, y: e.clientY - position.y });
+    }
+  };
+
+  const handleMouseMove = (e: MouseEvent) => {
+    if (isDragging) {
+      setPosition({
+        x: e.clientX - dragStart.x,
+        y: e.clientY - dragStart.y
+      });
+    }
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  useEffect(() => {
+    if (isDragging) {
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+      return () => {
+        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mouseup', handleMouseUp);
+      };
+    }
+  }, [isDragging, dragStart]);
+
   return (
     <section
-      className={`rounded-md w-full max-h-[calc(100vh-8rem)] h-full bg-ubuntu-gray-dark/[.96] 
+      className={`rounded-md w-full max-w-5xl max-h-[75vh] h-[65vh] bg-ubuntu-gray-dark/[.96] 
         border border-solid border-ubuntu-border font-fira-code 
         text-sm shadow-terminal flex flex-col overflow-hidden 
-        cursor-default resize ${terminalClasses} transition-all duration-100`}
+        resize ${terminalClasses} transition-all duration-100
+        mx-auto`}
+      style={{ 
+        position: 'relative',
+        transform: `translate(${position.x}px, ${position.y}px)`,
+        cursor: isDragging ? 'grabbing' : 'default',
+        marginTop: '10vh'
+      }}
+      onMouseDown={handleMouseDown}
     >
       <TerminalTitle
         closeTerminal={onClose}
@@ -75,8 +117,8 @@ const TerminalContainer: React.FC<TerminalContainerProps> = ({ isVisible, onClos
       />
 
       <div
-        className="px-1 text-ubuntu-gray text-sm w-full flex-1 min-h-0
-          overflow-y-auto terminal-scrollbar pb-2 pt-1"
+        className="px-4 py-3 text-ubuntu-gray text-sm w-full flex-1 min-h-0
+          overflow-y-auto terminal-scrollbar"
       >
         {isMobile && (
           <ResultDiv

@@ -14,7 +14,7 @@ const TerminalTitle: FC<TerminalTitleProps> = (props) => {
       className="bg-ubuntu-black/[.70] rounded-tl-md rounded-tr-md 
         text-ubuntu-gray font-segoe font-semibold flex items-center 
         justify-between py-2.5 px-4 border-b-2 border-solid border-black/[.4]
-        select-none shadow-sm relative"
+        select-none shadow-sm relative terminal-title cursor-move"
     >
       <div className="text-base">
         <BsTerminal />
