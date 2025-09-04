@@ -1,4 +1,5 @@
 import { projects } from "./projects";
+import { directoryState } from "../classes/directory-state";
 
 const commands: Map<string, string> = new Map<string, string>();
 
@@ -8,11 +9,12 @@ commands.set("touch", "Why would you touch anything?");
 commands.set("rm", "Why would you remove anything?");
 commands.set("cat", "Here's a cute cat for you! 😊");
 commands.set("about", aboutText());
-commands.set("pwd", "/");
 commands.set("date", new Date().toLocaleString());
 commands.set("projects", projectsText());
 commands.set("ubuntu", ubuntuLogo());
-commands.set("ls", projectsText());
+commands.set("ls", foldersText());
+commands.set("cd", "Change directory");
+commands.set("pwd", "Print working directory");
 commands.set("github", openLink("https://github.com/hordunlarmy"));
 commands.set("linkedin", openLink("https://www.linkedin.com/in/hordunlarmy"));
 commands.set("repo", openLink("https://github.com/hordunlarmy/hordunlarmy.github.io"));
@@ -28,11 +30,36 @@ commands.set(
 commands.set("techstack", techStack());
 commands.set("help", helpText());
 
-export const getCommandByName = (name: string): string => {
-  name = name.trim().toLowerCase().split(" ")[0];
+export const getCommandByName = (input: string): string => {
+  const parts = input.trim().split(" ");
+  const command = parts[0].toLowerCase();
+  const args = parts.slice(1);
+
+  // Handle commands with arguments
+  switch (command) {
+    case "cd":
+      if (args.length === 0) {
+        directoryState.changeDirectory("/");
+        return "";
+      }
+      try {
+        const newPath = directoryState.changeDirectory(args[0]);
+        return "";
+      } catch (error) {
+        return error instanceof Error ? error.message : "cd: unknown error";
+      }
+    case "pwd":
+      return directoryState.getCurrentPath();
+    case "ls":
+      const folders = directoryState.getAvailableFolders();
+      if (folders.length === 0) {
+        return "No files or directories found.";
+      }
+      return foldersText(folders);
+  }
 
   // commands that require redirecting
-  switch (name) {
+  switch (command) {
     case "github":
       window.open("https://github.com/hordunlarmy", "_blank");
       break;
@@ -53,7 +80,7 @@ export const getCommandByName = (name: string): string => {
       break;
   }
 
-  return commands.get(name) ?? `${name}: command not found`;
+  return commands.get(command) ?? `${command}: command not found`;
 };
 
 export const getCommandNames = (): string[] => {
@@ -63,6 +90,10 @@ export const getCommandNames = (): string[] => {
   }
 
   return commandNames.sort();
+};
+
+export const getFolderNames = (): string[] => {
+  return ["personal_projects", "APIs", "container_services", "packages"];
 };
 
 export function motdText(): string {
@@ -136,6 +167,27 @@ function projectsText(): string {
           target="_blank"
           rel="noreferrer"
         >${project.name}</a>`;
+      })
+      .join("&nbsp;&nbsp;&nbsp;")}
+  `;
+}
+
+function foldersText(folders?: string[]): string {
+  const defaultFolders = ["personal_projects", "APIs", "container_services", "packages"];
+  const foldersToShow = folders || defaultFolders;
+  
+  const folderColors: { [key: string]: string } = {
+    "personal_projects": "text-ubuntu-green",
+    "APIs": "text-ubuntu-blue", 
+    "container_services": "text-ubuntu-yellow",
+    "packages": "text-ubuntu-cyan"
+  };
+
+  return `
+    ${foldersToShow
+      .map((folder) => {
+        const color = folderColors[folder] || "text-ubuntu-white";
+        return `<span class="${color}">${folder}/</span>`;
       })
       .join("&nbsp;&nbsp;&nbsp;")}
   `;

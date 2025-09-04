@@ -1,9 +1,11 @@
 import { FC } from "react";
 import { BsTerminal } from "react-icons/bs";
 import { GrFormClose } from "react-icons/gr";
+import { directoryState } from "../../classes/directory-state";
 
 interface TerminalTitleProps {
   closeTerminal: () => void;
+  username: string;
 }
 
 const TerminalTitle: FC<TerminalTitleProps> = (props) => {
@@ -19,7 +21,7 @@ const TerminalTitle: FC<TerminalTitleProps> = (props) => {
       </div>
 
       <div className="w-fit h-fit absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-        user@ubuntu: ~
+        {props.username}@horduntech
       </div>
 
       <div className="text-sm flex items-center justify-center gap-2">

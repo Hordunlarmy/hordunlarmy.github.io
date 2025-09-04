@@ -7,17 +7,21 @@ import PromptSession from "../../classes/prompt-session";
 import ResultDiv from "./ResultDiv";
 import { motdText } from "../../const/commands";
 import { useIsMobile } from "../../hooks/useIsMobile";
+import { commandHistory } from "../../classes/command-history";
+import { directoryState } from "../../classes/directory-state";
 
 interface TerminalContainerProps {
   isVisible: boolean;
   onClose: () => void;
   isLocked: boolean;
+  username: string;
 }
 
-const TerminalContainer: React.FC<TerminalContainerProps> = ({ isVisible, onClose, isLocked }) => {
+const TerminalContainer: React.FC<TerminalContainerProps> = ({ isVisible, onClose, isLocked, username }) => {
   const isMobile = useIsMobile();
 
   const [isMotdVisible, setIsMotdVisible] = useState<boolean>(true);
+  const [currentPath, setCurrentPath] = useState<string>(directoryState.getCurrentPath());
   
   const terminalClasses = isVisible ? "scale-100 opacity-100" : "scale-0 opacity-0";
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -31,11 +35,18 @@ const TerminalContainer: React.FC<TerminalContainerProps> = ({ isVisible, onClos
     if (promptText.trim().toLowerCase().split(" ")[0] === "clear") {
       setPrompts([new PromptSession()]);
       setIsMotdVisible(false);
+      commandHistory.clearHistory();
+      setCurrentPath(directoryState.getCurrentPath());
       return;
     }
 
     setPrompts((prev) => {
+      // Execute the command first (this may change the directory)
       prev[prev.length - 1].handleEnterClick(promptText);
+      
+      // After command execution, update the current path for the NEXT prompt
+      setCurrentPath(directoryState.getCurrentPath());
+      
       return [...prev, new PromptSession()];
     });
   };
@@ -43,6 +54,7 @@ const TerminalContainer: React.FC<TerminalContainerProps> = ({ isVisible, onClos
   const promptText = useKeyboardInput(handleEnterPress, () => {
     setPrompts([new PromptSession()]);
     setIsMotdVisible(false);
+    setCurrentPath(directoryState.getCurrentPath());
   }, !isLocked);
 
   useEffect(
@@ -59,6 +71,7 @@ const TerminalContainer: React.FC<TerminalContainerProps> = ({ isVisible, onClos
     >
       <TerminalTitle
         closeTerminal={onClose}
+        username={username}
       />
 
       <div
@@ -78,6 +91,8 @@ const TerminalContainer: React.FC<TerminalContainerProps> = ({ isVisible, onClos
               <Prompt
                 text={prompt.enterPressed ? prompt.promptText : promptText}
                 showCursor={prompt.showCursor}
+                username={username}
+                currentPath={prompt.enterPressed ? prompt.currentPath : currentPath}
               />
 
               {prompt.result !== undefined && (

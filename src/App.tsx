@@ -7,6 +7,7 @@ import LockScreen from "./components/layout/LockScreen";
 const App = () => {
   const [isTerminalVisible, setIsTerminalVisible] = useState<boolean>(true);
   const [isLocked, setIsLocked] = useState<boolean>(true);
+  const [username, setUsername] = useState<string>("user");
 
   const toggleTerminal = () => {
     setIsTerminalVisible(!isTerminalVisible);
@@ -16,7 +17,8 @@ const App = () => {
     setIsLocked(!isLocked);
   };
 
-  const handleUnlock = () => {
+  const handleUnlock = (unlockName: string) => {
+    setUsername(unlockName || "user");
     setIsLocked(false);
   };
 
@@ -37,6 +39,7 @@ const App = () => {
             isVisible={isTerminalVisible}
             onClose={() => setIsTerminalVisible(false)}
             isLocked={isLocked}
+            username={username}
           />
         </Main>
       </div>

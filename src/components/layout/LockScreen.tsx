@@ -4,7 +4,7 @@ import { useTimeFormat } from "../../hooks/useTimeFormat";
 
 interface LockScreenProps {
   isVisible: boolean;
-  onUnlock: () => void;
+  onUnlock: (name: string) => void;
 }
 
 const LockScreen: FC<LockScreenProps> = ({ isVisible, onUnlock }) => {
@@ -21,8 +21,9 @@ const LockScreen: FC<LockScreenProps> = ({ isVisible, onUnlock }) => {
     // Simulate unlock process - any name works
     setTimeout(() => {
       setIsUnlocking(false);
+      const unlockName = name;
       setName("");
-      onUnlock();
+      onUnlock(unlockName);
     }, 1000);
   };
 

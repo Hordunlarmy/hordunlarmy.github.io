@@ -1,26 +1,30 @@
 import { FC, useState, useCallback } from "react";
 import { getCommandNames } from "../../const/commands";
+import { directoryState } from "../../classes/directory-state";
 
 interface PromptProps {
   text: string;
   showCursor: boolean;
+  username: string;
+  currentPath: string;
 }
 
 const Prompt: FC<PromptProps> = (props) => {
   const [cmdNames] = useState<string[]>(getCommandNames());
 
   const formatText = (text: string): string => {
+    if (text === "") return "";
+    
     const split = text.split(" ");
 
     if (cmdNames.includes(split[0])) {
-      split[0] = `<span class="text-kali-green-dark relative">${split[0]}</span>`;
+      split[0] = `<span class="text-ubuntu-green">${split[0]}</span>`;
     }
 
-    split[0] = `
-      ${split[0]}<span class="text-kali-text-muted/[.75] absolute">
-        ${getAutoCompleteText(text.trim())}
-      </span>
-    `;
+    const autocompleteText = getAutoCompleteText(text.trim());
+    if (autocompleteText) {
+      split[0] = `${split[0]}<span class="text-ubuntu-gray/[.6]">${autocompleteText}</span>`;
+    }
 
     return split.join("&nbsp;");
   };
@@ -42,41 +46,26 @@ const Prompt: FC<PromptProps> = (props) => {
   );
 
   return (
-    <div className="flex flex-col relative">
-      <div
-        className="ml-5 before:content[''] before:h-[2px] before:w-5 
-          before:bg-ubuntu-orange before:absolute before:top-1/4 before:left-0.5
-          after:content[''] after:h-1/2 after:w-[2px] after:bg-ubuntu-orange
-          after:absolute after:left-0.5 after:translate-y-1/2 
-          before:-translate-y-[2px] select-none font-bold"
-      >
-        <span className="text-ubuntu-orange">user@ubuntu</span>
+    <div className="flex items-center gap-2 text-sm font-fira-code">
+      <div className="flex items-center gap-1">
+        <span className="text-ubuntu-green font-semibold">{props.username}</span>
+        <span className="text-ubuntu-gray">@</span>
+        <span className="text-ubuntu-blue font-semibold">horduntech</span>
         <span className="text-ubuntu-gray">:</span>
-        <span className="text-ubuntu-blue">~</span>
+        <span className="text-ubuntu-yellow font-medium">{props.currentPath}</span>
         <span className="text-ubuntu-gray">$</span>
       </div>
-
-      <div
-        className="ml-3 before:content[''] before:h-[2px] before:w-3 
-          before:bg-ubuntu-orange before:absolute before:top-[75%] before:left-0.5
-          before:-translate-y-[2px] flex items-center gap-0"
-      >
-        <div
-          className={`text-ubuntu-gray text-sm relative 
-            ${
-              props.showCursor &&
-              `after:content[''] after:h-4 after:w-2 after:absolute 
-              after:bg-ubuntu-gray/[.8] after:translate-y-[10%] 
-              after:animate-blink after:text-black`
-            }`}
-        >
-          <span
-            className="ml-2"
-            dangerouslySetInnerHTML={{
-              __html: formatText(props.text),
-            }}
-          />
-        </div>
+      
+      <div className="flex-1 flex items-center">
+        <span
+          className="text-ubuntu-white"
+          dangerouslySetInnerHTML={{
+            __html: formatText(props.text),
+          }}
+        />
+        {props.showCursor && (
+          <span className="text-ubuntu-white animate-blink">|</span>
+        )}
       </div>
     </div>
   );
