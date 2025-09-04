@@ -1,13 +1,15 @@
-import { FC } from "react";
-import { BsTerminal } from "react-icons/bs";
+import { FC, useState } from "react";
+import { BsTerminal, BsLock } from "react-icons/bs";
 import { useTimeFormat } from "../../hooks/useTimeFormat";
 
 interface TopBarProps {
   onTerminalToggle: () => void;
   isTerminalVisible: boolean;
+  onLockToggle: () => void;
+  isLocked: boolean;
 }
 
-const TopBar: FC<TopBarProps> = ({ onTerminalToggle, isTerminalVisible }) => {
+const TopBar: FC<TopBarProps> = ({ onTerminalToggle, isTerminalVisible, onLockToggle, isLocked }) => {
   const currentTime = useTimeFormat();
 
   return (
@@ -26,7 +28,19 @@ const TopBar: FC<TopBarProps> = ({ onTerminalToggle, isTerminalVisible }) => {
         <BsTerminal className="text-sm" />
       </button>
       
-      <span className="text-ubuntu-white font-semibold">{currentTime}</span>
+      <span className="text-ubuntu-white font-semibold absolute left-1/2 transform -translate-x-1/2">{currentTime}</span>
+      
+      <button
+        onClick={onLockToggle}
+        className={`flex items-center justify-center w-8 h-6 rounded transition-all duration-150
+          ${isLocked 
+            ? 'bg-ubuntu-red text-ubuntu-white hover:bg-ubuntu-red-dark' 
+            : 'bg-ubuntu-gray-dark text-ubuntu-gray hover:bg-ubuntu-border hover:text-ubuntu-white'
+          }`}
+        title={isLocked ? "Unlock Screen" : "Lock Screen"}
+      >
+        <BsLock className="text-sm" />
+      </button>
     </div>
   );
 };

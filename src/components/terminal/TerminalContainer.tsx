@@ -51,7 +51,7 @@ const TerminalContainer: React.FC<TerminalContainerProps> = ({ isVisible, onClos
 
   return (
     <section
-      className={`rounded-md w-full h-full bg-ubuntu-gray-dark/[.96] 
+      className={`rounded-md w-full max-h-[calc(100vh-8rem)] h-full bg-ubuntu-gray-dark/[.96] 
         border border-solid border-ubuntu-border font-fira-code 
         text-sm shadow-terminal flex flex-col overflow-hidden 
         cursor-default resize ${terminalClasses} transition-all duration-100`}
@@ -61,7 +61,7 @@ const TerminalContainer: React.FC<TerminalContainerProps> = ({ isVisible, onClos
       />
 
       <div
-        className="px-1 text-ubuntu-gray text-sm w-full h-full
+        className="px-1 text-ubuntu-gray text-sm w-full flex-1 min-h-0
           overflow-y-auto terminal-scrollbar pb-2 pt-1"
       >
         {isMobile && (
