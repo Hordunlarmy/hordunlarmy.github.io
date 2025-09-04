@@ -6,7 +6,7 @@ import LockScreen from "./components/layout/LockScreen";
 
 const App = () => {
   const [isTerminalVisible, setIsTerminalVisible] = useState<boolean>(true);
-  const [isLocked, setIsLocked] = useState<boolean>(false);
+  const [isLocked, setIsLocked] = useState<boolean>(true);
 
   const toggleTerminal = () => {
     setIsTerminalVisible(!isTerminalVisible);
@@ -36,6 +36,7 @@ const App = () => {
           <TerminalContainer 
             isVisible={isTerminalVisible}
             onClose={() => setIsTerminalVisible(false)}
+            isLocked={isLocked}
           />
         </Main>
       </div>

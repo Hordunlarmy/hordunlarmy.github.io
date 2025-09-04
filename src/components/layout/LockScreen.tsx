@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect, useRef } from "react";
 import { BsLock, BsUnlock } from "react-icons/bs";
 import { useTimeFormat } from "../../hooks/useTimeFormat";
 
@@ -8,18 +8,20 @@ interface LockScreenProps {
 }
 
 const LockScreen: FC<LockScreenProps> = ({ isVisible, onUnlock }) => {
-  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
   const [isUnlocking, setIsUnlocking] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
   const currentTime = useTimeFormat();
 
   const handleUnlock = async () => {
-    if (password.trim() === "") return;
+    if (name.trim() === "") return;
     
     setIsUnlocking(true);
-    // Simulate unlock process
+    
+    // Simulate unlock process - any name works
     setTimeout(() => {
       setIsUnlocking(false);
-      setPassword("");
+      setName("");
       onUnlock();
     }, 1000);
   };
@@ -32,8 +34,12 @@ const LockScreen: FC<LockScreenProps> = ({ isVisible, onUnlock }) => {
 
   useEffect(() => {
     if (isVisible) {
-      setPassword("");
+      setName("");
       setIsUnlocking(false);
+      // Focus the input when lock screen becomes visible
+      setTimeout(() => {
+        inputRef.current?.focus();
+      }, 100);
     }
   }, [isVisible]);
 
@@ -60,14 +66,15 @@ const LockScreen: FC<LockScreenProps> = ({ isVisible, onUnlock }) => {
           <p className="text-ubuntu-gray text-sm">System Locked</p>
         </div>
 
-        {/* Password Input */}
+        {/* Name Input */}
         <div className="mb-6">
           <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            ref={inputRef}
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             onKeyPress={handleKeyPress}
-            placeholder="Enter password to unlock"
+            placeholder="Enter your name to unlock"
             className="w-full px-4 py-3 bg-ubuntu-black border border-ubuntu-border 
               rounded-md text-ubuntu-white placeholder-ubuntu-gray 
               focus:outline-none focus:border-ubuntu-orange transition-colors
@@ -80,7 +87,7 @@ const LockScreen: FC<LockScreenProps> = ({ isVisible, onUnlock }) => {
         {/* Unlock Button */}
         <button
           onClick={handleUnlock}
-          disabled={password.trim() === "" || isUnlocking}
+          disabled={name.trim() === "" || isUnlocking}
           className="w-full py-3 bg-ubuntu-orange hover:bg-ubuntu-orange-dark 
             disabled:bg-ubuntu-gray-dark disabled:text-ubuntu-gray
             text-ubuntu-white font-semibold rounded-md transition-all duration-150
@@ -102,6 +109,9 @@ const LockScreen: FC<LockScreenProps> = ({ isVisible, onUnlock }) => {
         {/* Hint */}
         <p className="text-center text-ubuntu-gray text-xs mt-4">
           Press Enter or click Unlock to continue
+        </p>
+        <p className="text-center text-ubuntu-gray text-xs mt-2 opacity-60">
+          Enter your name to unlock
         </p>
       </div>
     </div>

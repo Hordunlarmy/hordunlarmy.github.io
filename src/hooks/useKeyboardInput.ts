@@ -3,13 +3,15 @@ import { getCommandNames } from "../const/commands";
 
 export const useKeyboardInput = (
   enterPress: (result: string) => void,
-  clearInputs: () => void
+  clearInputs: () => void,
+  isActive: boolean = true
 ): string => {
   const [result, setResult] = useState<string>("");
   const [cmdNames] = useState<string[]>(getCommandNames());
 
   const handleKeyPress = useCallback(
     (event: KeyboardEvent) => {
+      if (!isActive) return;
       event.preventDefault();
 
       if (event.isComposing) {
@@ -63,7 +65,7 @@ export const useKeyboardInput = (
           break;
       }
     },
-    [enterPress, result, clearInputs, cmdNames]
+    [enterPress, result, clearInputs, cmdNames, isActive]
   );
 
   useEffect(() => {

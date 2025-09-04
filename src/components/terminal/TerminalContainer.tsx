@@ -11,9 +11,10 @@ import { useIsMobile } from "../../hooks/useIsMobile";
 interface TerminalContainerProps {
   isVisible: boolean;
   onClose: () => void;
+  isLocked: boolean;
 }
 
-const TerminalContainer: React.FC<TerminalContainerProps> = ({ isVisible, onClose }) => {
+const TerminalContainer: React.FC<TerminalContainerProps> = ({ isVisible, onClose, isLocked }) => {
   const isMobile = useIsMobile();
 
   const [isMotdVisible, setIsMotdVisible] = useState<boolean>(true);
@@ -42,7 +43,7 @@ const TerminalContainer: React.FC<TerminalContainerProps> = ({ isVisible, onClos
   const promptText = useKeyboardInput(handleEnterPress, () => {
     setPrompts([new PromptSession()]);
     setIsMotdVisible(false);
-  });
+  }, !isLocked);
 
   useEffect(
     () => bottomRef.current?.scrollIntoView({ behavior: "smooth" }),
