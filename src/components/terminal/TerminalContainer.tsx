@@ -8,13 +8,17 @@ import ResultDiv from "./ResultDiv";
 import { motdText } from "../../const/commands";
 import { useIsMobile } from "../../hooks/useIsMobile";
 
-const TerminalContainer = () => {
+interface TerminalContainerProps {
+  isVisible: boolean;
+  onClose: () => void;
+}
+
+const TerminalContainer: React.FC<TerminalContainerProps> = ({ isVisible, onClose }) => {
   const isMobile = useIsMobile();
 
   const [isMotdVisible, setIsMotdVisible] = useState<boolean>(true);
-  const [terminalClasses, setTerminalClasses] = useState<string>(
-    "scale-100 opacity-100"
-  );
+  
+  const terminalClasses = isVisible ? "scale-100 opacity-100" : "scale-0 opacity-0";
   const bottomRef = useRef<HTMLDivElement>(null);
   useScrollToBottom(bottomRef.current);
 
@@ -47,22 +51,22 @@ const TerminalContainer = () => {
 
   return (
     <section
-      className={`rounded-md w-full h-full bg-kali-gray-dark/[.96] 
-        border border-solid border-kali-border font-fira-code 
+      className={`rounded-md w-full h-full bg-ubuntu-gray-dark/[.96] 
+        border border-solid border-ubuntu-border font-fira-code 
         text-sm shadow-terminal flex flex-col overflow-hidden 
         cursor-default resize ${terminalClasses} transition-all duration-100`}
     >
       <TerminalTitle
-        closeTerminal={() => setTerminalClasses("scale-0 opacity-0")}
+        closeTerminal={onClose}
       />
 
       <div
-        className="px-1 text-kali-gray text-sm w-full h-full
+        className="px-1 text-ubuntu-gray text-sm w-full h-full
           overflow-y-auto terminal-scrollbar pb-2 pt-1"
       >
         {isMobile && (
           <ResultDiv
-            text={`<span class="text-kali-red-dark">Err: This site does not work on devices without a physical keyboard.</span>`}
+            text={`<span class="text-ubuntu-red-dark">Err: This site does not work on devices without a physical keyboard.</span>`}
           />
         )}
         {isMotdVisible && <ResultDiv text={motdText()} />}

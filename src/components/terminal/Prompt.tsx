@@ -45,31 +45,28 @@ const Prompt: FC<PromptProps> = (props) => {
     <div className="flex flex-col relative">
       <div
         className="ml-5 before:content[''] before:h-[2px] before:w-5 
-          before:bg-kali-blue before:absolute before:top-1/4 before:left-0.5
-          after:content[''] after:h-1/2 after:w-[2px] after:bg-kali-blue
+          before:bg-ubuntu-orange before:absolute before:top-1/4 before:left-0.5
+          after:content[''] after:h-1/2 after:w-[2px] after:bg-ubuntu-orange
           after:absolute after:left-0.5 after:translate-y-1/2 
           before:-translate-y-[2px] select-none font-bold"
       >
-        <span className="text-kali-blue">(</span>
-        <span className="text-kali-red">root💀kali</span>
-        <span className="text-kali-blue">)-[</span>
-        <span className="text-kali-gray">~</span>
-        <span className="text-kali-blue">]</span>
+        <span className="text-ubuntu-orange">user@ubuntu</span>
+        <span className="text-ubuntu-gray">:</span>
+        <span className="text-ubuntu-blue">~</span>
+        <span className="text-ubuntu-gray">$</span>
       </div>
 
       <div
         className="ml-3 before:content[''] before:h-[2px] before:w-3 
-          before:bg-kali-blue before:absolute before:top-[75%] before:left-0.5
+          before:bg-ubuntu-orange before:absolute before:top-[75%] before:left-0.5
           before:-translate-y-[2px] flex items-center gap-0"
       >
-        <span className="text-kali-red ml-0.5 select-none font-bold">#</span>
-
         <div
-          className={`text-kali-gray text-sm relative 
+          className={`text-ubuntu-gray text-sm relative 
             ${
               props.showCursor &&
               `after:content[''] after:h-4 after:w-2 after:absolute 
-              after:bg-kali-gray/[.8] after:translate-y-[10%] 
+              after:bg-ubuntu-gray/[.8] after:translate-y-[10%] 
               after:animate-blink after:text-black`
             }`}
         >

@@ -3,7 +3,7 @@ import { projects } from "./projects";
 const commands: Map<string, string> = new Map<string, string>();
 
 commands.set("motd", motdText());
-commands.set("whoami", "root");
+commands.set("whoami", "user");
 commands.set("touch", "Why would you touch anything?");
 commands.set("rm", "Why would you remove anything?");
 commands.set("cat", "Here's a cute cat for you! 😊");
@@ -11,15 +11,15 @@ commands.set("about", aboutText());
 commands.set("pwd", "/");
 commands.set("date", new Date().toLocaleString());
 commands.set("projects", projectsText());
-commands.set("kali", kaliLogo());
+commands.set("ubuntu", ubuntuLogo());
 commands.set("ls", projectsText());
-commands.set("github", openLink("https://github.com/0l1v3rr"));
-commands.set("linkedin", openLink("https://www.linkedin.com/in/0l1v3rr"));
-commands.set("repo", openLink("https://github.com/0l1v3rr/0l1v3rr.github.io"));
+commands.set("github", openLink("https://github.com/hordunlarmy"));
+commands.set("linkedin", openLink("https://www.linkedin.com/in/hordunlarmy"));
+commands.set("repo", openLink("https://github.com/hordunlarmy/hordunlarmy.github.io"));
 commands.set("email", openLink("mailto:oliver.mrakovics@gmail.com"));
 commands.set(
   "codersrank",
-  openLink("https://profile.codersrank.io/user/0l1v3rr/")
+  openLink("https://profile.codersrank.io/user/hordunlarmy/")
 );
 commands.set(
   "socials",
@@ -34,19 +34,19 @@ export const getCommandByName = (name: string): string => {
   // commands that require redirecting
   switch (name) {
     case "github":
-      window.open("https://github.com/0l1v3rr", "_blank");
+      window.open("https://github.com/hordunlarmy", "_blank");
       break;
     case "repo":
-      window.open("https://github.com/0l1v3rr/0l1v3rr.github.io", "_blank");
+      window.open("https://github.com/hordunlarmy/hordunlarmy.github.io", "_blank");
       break;
     case "linkedin":
-      window.open("https://www.linkedin.com/in/0l1v3rr", "_blank");
+      window.open("https://www.linkedin.com/in/hordunlarmy", "_blank");
       break;
     case "email":
       window.open("mailto:oliver.mrakovics@gmail.com", "_blank");
       break;
     case "codersrank":
-      window.open("https://profile.codersrank.io/user/0l1v3rr/", "_blank");
+      window.open("https://profile.codersrank.io/user/hordunlarmy/", "_blank");
       break;
     case "cat":
       window.open("https://cataas.com/cat/cute", "_blank");
@@ -67,16 +67,16 @@ export const getCommandNames = (): string[] => {
 
 export function motdText(): string {
   return `
-    Welcome to 0l1v3rr.github.io!<br>
+    Welcome to hordunlarmy.github.io!<br>
 
     <br>&nbsp;* GitHub: 
-    <a class="terminal-link" href="https://github.com/0l1v3rr" target="_blank" rel="noreferrer">
-      https://github.com/0l1v3rr
+    <a class="terminal-link" href="https://github.com/hordunlarmy" target="_blank" rel="noreferrer">
+      https://github.com/hordunlarmy
     </a>
 
     <br>&nbsp;* Repo: 
-    <a class="terminal-link" href="https://github.com/0l1v3rr/0l1v3rr.github.io" target="_blank" rel="noreferrer">
-      https://github.com/0l1v3rr/0l1v3rr.github.io
+    <a class="terminal-link" href="https://github.com/hordunlarmy/hordunlarmy.github.io" target="_blank" rel="noreferrer">
+      https://github.com/hordunlarmy/hordunlarmy.github.io
     </a>
 
     <br>
@@ -101,7 +101,7 @@ function helpText(): string {
 
 function aboutText(): string {
   return `
-    Hello, root!
+    Hello, user!
     <br><br>
 
     Passionate about web development, I am an experienced <span class="terminal-bold">full-stack engineer</span> specializing in <span class="terminal-bold">front-end development</span>.
@@ -141,77 +141,21 @@ function projectsText(): string {
   `;
 }
 
-function kaliLogo() {
+function ubuntuLogo() {
   return `
-    <span class="text-kali-blue flex flex-col">
-      <span>${"..............".replaceAll(" ", "&nbsp;")}</span>
-      <span>${"            ..,;:ccc,.".replaceAll(" ", "&nbsp;")}</span>
-      <span>${"          ......''';lxO.".replaceAll(" ", "&nbsp;")}</span>
-      <span>${".....''''..........,:ld;".replaceAll(" ", "&nbsp;")}</span>
-      <span>${"           .';;;:::;,,.x,".replaceAll(" ", "&nbsp;")}</span>
-      <span>${"      ..'''.            0Xxoc:,.  ...".replaceAll(
-        " ",
-        "&nbsp;"
-      )}</span>
-      <span>${"  ....                ,ONkc;,;cokOdc',.".replaceAll(
-        " ",
-        "&nbsp;"
-      )}</span>
-      <span>${" .                   OMo           ':ddo.".replaceAll(
-        " ",
-        "&nbsp;"
-      )}</span>
-
-      <span>${"                    dMc               :OO;".replaceAll(
-        " ",
-        "&nbsp;"
-      )}</span>
-      <span>${"                    0M.                 .:o.".replaceAll(
-        " ",
-        "&nbsp;"
-      )}</span>
-      <span>${"                    ;Wd".replaceAll(" ", "&nbsp;")}</span>
-      <span>${"                     ;XO,".replaceAll(" ", "&nbsp;")}</span>
-      <span>${"                       ,d0Odlc;,..".replaceAll(
-        " ",
-        "&nbsp;"
-      )}</span>
-      <span>${"                            ..',;:cdOOd::,.".replaceAll(
-        " ",
-        "&nbsp;"
-      )}</span>
-      <span>${"                                     .:d;.':;.".replaceAll(
-        " ",
-        "&nbsp;"
-      )}</span>
-      <span>${"                                        'd,  .'".replaceAll(
-        " ",
-        "&nbsp;"
-      )}</span>
-      <span>${"                                          ;l   ..".replaceAll(
-        " ",
-        "&nbsp;"
-      )}</span>
-      <span>${"                                           .o".replaceAll(
-        " ",
-        "&nbsp;"
-      )}</span>
-      <span>${"                                             c".replaceAll(
-        " ",
-        "&nbsp;"
-      )}</span>
-      <span>${"                                             .'".replaceAll(
-        " ",
-        "&nbsp;"
-      )}</span>
-      <span>${"                                              .".replaceAll(
-        " ",
-        "&nbsp;"
-      )}</span>
+    <span class="text-ubuntu-orange flex flex-col">
+      <span>${"    _    _ _                 _       _".replaceAll(" ", "&nbsp;")}</span>
+      <span>${"   | |  | | |               | |     | |".replaceAll(" ", "&nbsp;")}</span>
+      <span>${"   | |  | | |__  _   _ _ __ | |_ ___| |".replaceAll(" ", "&nbsp;")}</span>
+      <span>${"   | |  | | '_ \\| | | | '_ \\| __/ _ \\ |".replaceAll(" ", "&nbsp;")}</span>
+      <span>${"   | |__| | |_) | |_| | | | | ||  __/ |".replaceAll(" ", "&nbsp;")}</span>
+      <span>${"    \\____/|_.__/ \\__,_|_| |_|\\__\\___|_|".replaceAll(" ", "&nbsp;")}</span>
+      <br>
+      <span>${"Welcome to Ubuntu!".replaceAll(" ", "&nbsp;")}</span>
     </span>
   `;
 }
 
 function techStack() {
-  return `<a href="https://github.com/0l1v3rr/github-readme-tech-stack" target="_blank"><img src="https://github-readme-tech-stack.vercel.app/api/cards?title=Tech+Stack&width=420&align=center&titleAlign=center&fontSize=20&lineHeight=10&lineCount=2&theme=0l1v3rr&line1=node.js%2Cnode.js%2Cauto%3Bexpress%2Cexpress%2Cffffff%3Bnestjs%2Cnestjs%2Ce12a54%3B&line2=react%2Creact%2Cauto%3Btailwindcss%2Ctailwind%2Cauto%3Btypescript%2Ctypescript%2Cauto%3B" alt="Tech Stack" /></a>`;
+  return `<a href="https://github.com/hordunlarmy/github-readme-tech-stack" target="_blank"><img src="https://github-readme-tech-stack.vercel.app/api/cards?title=Tech+Stack&width=420&align=center&titleAlign=center&fontSize=20&lineHeight=10&lineCount=2&theme=hordunlarmy&line1=node.js%2Cnode.js%2Cauto%3Bexpress%2Cexpress%2Cffffff%3Bnestjs%2Cnestjs%2Ce12a54%3B&line2=react%2Creact%2Cauto%3Btailwindcss%2Ctailwind%2Cauto%3Btypescript%2Ctypescript%2Cauto%3B" alt="Tech Stack" /></a>`;
 }

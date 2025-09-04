@@ -8,11 +8,11 @@
   }
 
   .terminal-scrollbar::-webkit-scrollbar-track {
-    @apply bg-kali-black/[.75];
+    @apply bg-ubuntu-black/[.75];
   }
 
   .terminal-scrollbar::-webkit-scrollbar-thumb {
-    @apply bg-kali-gray/[.15] rounded-md transition-all border-[3px] 
+    @apply bg-ubuntu-gray/[.15] rounded-md transition-all border-[3px] 
       border-solid border-transparent bg-clip-content;
   }
 
@@ -21,19 +21,19 @@
   }
 
   .terminal-bold {
-    @apply font-bold text-kali-white;
+    @apply font-bold text-ubuntu-white;
   }
 }
 
 .project-frontend {
-  @apply hover:underline text-kali-green cursor-default whitespace-nowrap;
+  @apply hover:underline text-ubuntu-green cursor-default whitespace-nowrap;
 }
 .project-backend {
-  @apply hover:underline text-kali-white cursor-default whitespace-nowrap;
+  @apply hover:underline text-ubuntu-white cursor-default whitespace-nowrap;
 }
 .project-fullstack {
-  @apply hover:underline text-kali-yellow cursor-default whitespace-nowrap;
+  @apply hover:underline text-ubuntu-yellow cursor-default whitespace-nowrap;
 }
 .project-other {
-  @apply hover:underline text-kali-cyan cursor-default whitespace-nowrap;
+  @apply hover:underline text-ubuntu-cyan cursor-default whitespace-nowrap;
 }

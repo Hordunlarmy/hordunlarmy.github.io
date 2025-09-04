@@ -1,4 +1,4 @@
-<h1><a href="https://0l1v3rr.github.io/" target="_blank">0l1v3rr - Terminal Website</a></h1>
+<h1><a href="https://hordunlarmy.github.io/" target="_blank">hordunlarmy - Terminal Website</a></h1>
 
 This is a Kali Linux Terminal-like personal website.
 
@@ -17,7 +17,7 @@ This is a Kali Linux Terminal-like personal website.
 
 <hr>
 
-[![My Tech Stack](https://github-readme-tech-stack.vercel.app/api/cards?title=This%20Project's%20Tech%20Stack&lineCount=1&theme=github_dark&align=left&line1=typescript,typescript,auto;react,react,auto;tailwindcss,tailwind,auto;)](https://github.com/0l1v3rr/github-readme-tech-stack)
+[![My Tech Stack](https://github-readme-tech-stack.vercel.app/api/cards?title=This%20Project's%20Tech%20Stack&lineCount=1&theme=github_dark&align=left&line1=typescript,typescript,auto;react,react,auto;tailwindcss,tailwind,auto;)](https://github.com/hordunlarmy/github-readme-tech-stack)
 
 <hr>
 
@@ -25,8 +25,8 @@ This is a Kali Linux Terminal-like personal website.
 
 ```sh
 # 1. Clone the repo
-git clone https://github.com/0l1v3rr/0l1v3rr.github.io.git
-cd 0l1v3rr.github.io
+git clone https://github.com/hordunlarmy/hordunlarmy.github.io.git
+cd hordunlarmy.github.io
 
 # 2. Install the necessary dependencies
 npm i
