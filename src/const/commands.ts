@@ -74,7 +74,7 @@ commands.set("motd", motdText());
 commands.set("whoami", "whoami");
 commands.set("cat", "Here's a cute cat for you! 😊");
 commands.set("about", "about");
-commands.set("date", new Date().toLocaleString());
+commands.set("fortune", fortuneText());
 commands.set("ubuntu", ubuntuLogo());
 commands.set("ls", foldersText());
 commands.set("cd", "Change directory");
@@ -101,23 +101,29 @@ commands.set("help", helpText());
 const linkableItems = new Map<string, string>();
 
 // Add all projects to linkable items
-projects.forEach(project => {
-  linkableItems.set(project.name.toLowerCase().replace(/\s+/g, ''), project.link);
+projects.forEach((project) => {
+  linkableItems.set(
+    project.name.toLowerCase().replace(/\s+/g, ""),
+    project.link
+  );
 });
 
 // Add all APIs to linkable items
-apisData.forEach(api => {
-  linkableItems.set(api.name.toLowerCase().replace(/\s+/g, ''), api.link);
+apisData.forEach((api) => {
+  linkableItems.set(api.name.toLowerCase().replace(/\s+/g, ""), api.link);
 });
 
 // Add all containers to linkable items
-containersData.forEach(container => {
-  linkableItems.set(container.name.toLowerCase().replace(/\s+/g, ''), container.link);
+containersData.forEach((container) => {
+  linkableItems.set(
+    container.name.toLowerCase().replace(/\s+/g, ""),
+    container.link
+  );
 });
 
 // Add all packages to linkable items
-packagesData.forEach(pkg => {
-  linkableItems.set(pkg.name.toLowerCase().replace(/\s+/g, ''), pkg.link);
+packagesData.forEach((pkg) => {
+  linkableItems.set(pkg.name.toLowerCase().replace(/\s+/g, ""), pkg.link);
 });
 
 export const getCommandByName = (
@@ -222,103 +228,108 @@ export const getFolderNames = (): string[] => {
 
 export function motdText(): string {
   return `
-    Welcome to hordunlarmy.github.io!<br>
+    <div class="text-ubuntu-white">
+      <div class="text-ubuntu-orange font-bold text-xl mb-4">
+        🌟 Welcome to hordunlarmy.github.io! 🌟
+      </div>
+      
+      <div class="space-y-2">
+        <div class="flex items-center">
+          <span class="text-ubuntu-green font-bold mr-2">📁</span>
+          <span class="text-ubuntu-yellow">GitHub:</span>
+          <a class="terminal-link ml-2 text-ubuntu-cyan hover:text-ubuntu-yellow" href="https://github.com/hordunlarmy" target="_blank" rel="noreferrer">
+            https://github.com/hordunlarmy
+          </a>
+        </div>
 
-    <br>&nbsp;* GitHub: 
-    <a class="terminal-link" href="https://github.com/hordunlarmy" target="_blank" rel="noreferrer">
-      https://github.com/hordunlarmy
-    </a>
+        <div class="flex items-center">
+          <span class="text-ubuntu-blue font-bold mr-2">💻</span>
+          <span class="text-ubuntu-yellow">Repo:</span>
+          <a class="terminal-link ml-2 text-ubuntu-cyan hover:text-ubuntu-yellow" href="https://github.com/hordunlarmy/hordunlarmy.github.io" target="_blank" rel="noreferrer">
+            https://github.com/hordunlarmy/hordunlarmy.github.io
+          </a>
+        </div>
+      </div>
 
-    <br>&nbsp;* Repo: 
-    <a class="terminal-link" href="https://github.com/hordunlarmy/hordunlarmy.github.io" target="_blank" rel="noreferrer">
-      https://github.com/hordunlarmy/hordunlarmy.github.io
-    </a>
-
-    <br>
-    <br>&nbsp;* Type 'help' to see the list of available commands.
+      <div class="mt-6 p-3 bg-ubuntu-dark rounded-lg border-l-4 border-ubuntu-orange">
+        <div class="flex items-center">
+          <span class="text-ubuntu-orange text-lg mr-2">💡</span>
+          <span class="text-ubuntu-white">
+            Type <span class="text-ubuntu-yellow font-bold">'help'</span> to see the list of available commands
+          </span>
+        </div>
+      </div>
+    </div>
   `;
 }
 
 function helpText(): string {
-  const basicCommands = [
-    "about",
-    "clear", 
-    "help",
-    "whoami"
-  ];
+  const basicCommands = ["about", "clear", "help", "whoami"];
 
-  const navigationCommands = [
-    "cd [directory]",
-    "ls",
-    "pwd"
-  ];
+  const navigationCommands = ["cd [directory]", "ls", "pwd"];
 
   const socialCommands = [
     "github",
-    "linkedin", 
+    "linkedin",
     "email",
     "codersrank",
-    "socials"
+    "socials",
   ];
 
-  const specialCommands = [
-    "ubuntu",
-    "cat",
-    "date"
-  ];
+  const specialCommands = ["ubuntu", "cat", "fortune"];
 
   // Add some popular project/package names to help
-  const popularItems = [
-    "devcommit",
-    "stealthportal", 
-    "eduhub",
-    "oguild",
-    "blogapi",
-    "libraryapi",
-    "nginx-proxy",
-    "postgres-db"
-  ];
+  const popularItems = ["devcommit", "stealthportal", "eduhub", "oguild"];
 
-  const availableDirectories = [
-    "projects",
-    "APIs", 
-    "containers",
-    "packages"
-  ];
+  const availableDirectories = ["projects", "APIs", "containers", "packages"];
 
   return `
     <div class="text-ubuntu-white">
       <span class="text-ubuntu-orange font-bold text-lg">Available Commands</span>
       <br><br>
       
-      <span class="text-ubuntu-green font-bold">📁 Navigation:</span>
-      <br>
-      ${navigationCommands.map(cmd => `&nbsp;&nbsp;${cmd}`).join("<br>")}
-      <br><br>
+      <div class="grid grid-cols-3 gap-6">
+        <div>
+          <span class="text-ubuntu-green font-bold">📁 Navigation:</span>
+          <br>
+          ${navigationCommands.map((cmd) => `&nbsp;&nbsp;${cmd}`).join("<br>")}
+        </div>
+        
+        <div>
+          <span class="text-ubuntu-blue font-bold">ℹ️  Information:</span>
+          <br>
+          ${basicCommands.map((cmd) => `&nbsp;&nbsp;${cmd}`).join("<br>")}
+        </div>
+        
+        <div>
+          <span class="text-ubuntu-yellow font-bold">🔗 Social Links:</span>
+          <br>
+          ${socialCommands.map((cmd) => `&nbsp;&nbsp;${cmd}`).join("<br>")}
+        </div>
+      </div>
       
-      <span class="text-ubuntu-blue font-bold">ℹ️  Information:</span>
       <br>
-      ${basicCommands.map(cmd => `&nbsp;&nbsp;${cmd}`).join("<br>")}
-      <br><br>
       
-      <span class="text-ubuntu-yellow font-bold">🔗 Social Links:</span>
-      <br>
-      ${socialCommands.map(cmd => `&nbsp;&nbsp;${cmd}`).join("<br>")}
-      <br><br>
+      <div class="grid grid-cols-3 gap-6">
+        <div>
+          <span class="text-ubuntu-cyan font-bold">🎯 Special:</span>
+          <br>
+          ${specialCommands.map((cmd) => `&nbsp;&nbsp;${cmd}`).join("<br>")}
+        </div>
+        
+        <div>
+          <span class="text-ubuntu-orange font-bold">📂 Directories:</span>
+          <br>
+          ${availableDirectories.map((dir) => `&nbsp;&nbsp;cd ${dir}`).join("<br>")}
+        </div>
+        
+        <div>
+          <span class="text-ubuntu-green font-bold">⚡ Quick Access:</span>
+          <br>
+          ${popularItems.map((item) => `&nbsp;&nbsp;${item}`).join("<br>")}
+        </div>
+      </div>
       
-      <span class="text-ubuntu-cyan font-bold">🎯 Special:</span>
-      <br>
-      ${specialCommands.map(cmd => `&nbsp;&nbsp;${cmd}`).join("<br>")}
-      <br><br>
-      
-      <span class="text-ubuntu-orange font-bold">📂 Directories:</span>
-      <br>
-      ${availableDirectories.map(dir => `&nbsp;&nbsp;cd ${dir}`).join("<br>")}
-      <br><br>
-      
-      <span class="text-ubuntu-green font-bold">⚡ Quick Access (type any name to open):</span>
-      <br>
-      ${popularItems.join(", ")}
       <br><br>
       
       <div class="text-ubuntu-white text-sm bg-ubuntu-dark p-2 rounded">
@@ -419,7 +430,7 @@ function foldersText(folders?: string[]): string {
 
 function ubuntuLogo() {
   return `
-    <span class="text-ubuntu-orange flex flex-col">
+    <span class="text-ubuntu-orange flex flex-col font-mono">
       <span>${"    _    _ _                 _       _".replaceAll(" ", "&nbsp;")}</span>
       <span>${"   | |  | | |               | |     | |".replaceAll(" ", "&nbsp;")}</span>
       <span>${"   | |  | | |__  _   _ _ __ | |_ ___| |".replaceAll(" ", "&nbsp;")}</span>
@@ -434,6 +445,169 @@ function ubuntuLogo() {
 
 function techStack() {
   return `<a href="https://github.com/hordunlarmy/github-readme-tech-stack" target="_blank"><img src="https://github-readme-tech-stack.vercel.app/api/cards?title=Tech+Stack&width=420&align=center&titleAlign=center&fontSize=20&lineHeight=10&lineCount=2&theme=hordunlarmy&line1=node.js%2Cnode.js%2Cauto%3Bexpress%2Cexpress%2Cffffff%3Bnestjs%2Cnestjs%2Ce12a54%3B&line2=react%2Creact%2Cauto%3Btailwindcss%2Ctailwind%2Cauto%3Btypescript%2Ctypescript%2Cauto%3B" alt="Tech Stack" /></a>`;
+}
+
+function fortuneText(): string {
+  const fortunes = [
+    // Inspirational & Motivational
+    "The best way to predict the future is to create it.",
+    "Success is not final, failure is not fatal: it is the courage to continue that counts.",
+    "The only way to do great work is to love what you do.",
+    "Innovation distinguishes between a leader and a follower.",
+    "The future belongs to those who believe in the beauty of their dreams.",
+    "It's not that I'm so smart, it's just that I stay with problems longer.",
+    "The way to get started is to quit talking and begin doing.",
+    "Don't be afraid to give up the good to go for the great.",
+    "The only impossible journey is the one you never begin.",
+    "Success is walking from failure to failure with no loss of enthusiasm.",
+    "The harder you work for something, the greater you'll feel when you achieve it.",
+    "Dream big and dare to fail.",
+    "The future depends on what you do today.",
+    "Believe you can and you're halfway there.",
+    "The only person you are destined to become is the person you decide to be.",
+    "Your limitation—it's only your imagination.",
+    "Great things never come from comfort zones.",
+    "Dream it. Wish it. Do it.",
+    "Success doesn't just find you. You have to go out and get it.",
+    "The harder you work, the luckier you get.",
+
+    // Programming Wisdom
+    "Code is like humor. When you have to explain it, it's bad.",
+    "First, solve the problem. Then, write the code.",
+    "Experience is the name everyone gives to their mistakes.",
+    "The best error message is the one that never shows up.",
+    "It's not a bug; it's an undocumented feature.",
+    "There are only two hard things in Computer Science: cache invalidation and naming things.",
+    "A good programmer is someone who always looks both ways before crossing a one-way street.",
+    "The best code is no code at all.",
+    "Premature optimization is the root of all evil.",
+    "Any fool can write code that a computer can understand. Good programmers write code that humans can understand.",
+    "The most disastrous thing that you can ever learn is your first programming language.",
+    "Real programmers count from 0.",
+    "If debugging is the process of removing software bugs, then programming must be the process of putting them in.",
+    "Walking on water and developing software from a specification are easy if both are frozen.",
+    "It's not a bug, it's a feature.",
+    "The best way to get a project done faster is to start sooner.",
+    "A program is never less than 90% complete, and never more than 95% complete.",
+    "The first 90% of the code accounts for the first 90% of the development time.",
+    "Good code is its own best documentation.",
+    "Code never lies, comments sometimes do.",
+    "The best error handling is the one that prevents errors.",
+    "A good programmer is someone who always looks both ways before crossing a one-way street.",
+    "The best way to learn a programming language is by writing programs in it.",
+    "Code is poetry written in logic.",
+    "The best programs are written by programmers who are having fun.",
+    "A program is a poem that does something useful.",
+    "The best code is the code you don't have to write.",
+    "Programming is not about typing, it's about thinking.",
+    "The best way to debug a program is to not write bugs in the first place.",
+    "Code is like a joke. If you have to explain it, it's bad.",
+    "The best programs are the ones that make the computer do the work.",
+
+    // Tech Humor
+    "Why do programmers prefer dark mode? Because light attracts bugs.",
+    "A SQL query goes into a bar, walks up to two tables and asks: 'Can I join you?'",
+    "Why do Java developers wear glasses? Because they can't C#.",
+    "How many programmers does it take to change a light bulb? None, that's a hardware problem.",
+    "Why do programmers hate nature? It has too many bugs.",
+    "What's a programmer's favorite hangout place? The Foo Bar.",
+    "Why did the programmer quit his job? He didn't get arrays.",
+    "What do you call a programmer from Finland? Nerdic.",
+    "Why do programmers prefer iOS development? Because Android is too fragmented.",
+    "What's a programmer's favorite type of music? Algo-rhythms.",
+    "Why don't programmers like to go outside? The sunlight causes too many reflections.",
+    "What do you call a programmer who doesn't comment their code? A silent partner.",
+    "Why did the developer go broke? Because he used up all his cache.",
+    "What's a programmer's favorite snack? Microchips.",
+    "Why do programmers love nature? It has the best algorithms.",
+    "What do you call a programmer who doesn't use version control? A time traveler.",
+    "Why did the programmer get fired? He kept trying to debug production on a Friday.",
+    "What's a programmer's favorite type of tree? A binary tree.",
+    "Why do programmers hate stairs? They're always up to something.",
+    "What do you call a programmer who doesn't test their code? An optimist.",
+
+    // Life Wisdom
+    "Life is what happens to you while you're busy making other plans.",
+    "The way to get started is to quit talking and begin doing.",
+    "Life is either a daring adventure or nothing at all.",
+    "The future belongs to those who believe in the beauty of their dreams.",
+    "It is during our darkest moments that we must focus to see the light.",
+    "The way to get started is to quit talking and begin doing.",
+    "Don't judge each day by the harvest you reap but by the seeds that you plant.",
+    "The only impossible journey is the one you never begin.",
+    "In the end, it's not the years in your life that count. It's the life in your years.",
+    "Life is a learning process, and if you stop learning, you stop living.",
+    "The only way to do great work is to love what you do.",
+    "Success is not the key to happiness. Happiness is the key to success.",
+    "The only person you are destined to become is the person you decide to be.",
+    "Your limitation—it's only your imagination.",
+    "Great things never come from comfort zones.",
+    "Dream it. Wish it. Do it.",
+    "Success doesn't just find you. You have to go out and get it.",
+    "The harder you work, the luckier you get.",
+    "Don't be afraid to give up the good to go for the great.",
+    "The only impossible journey is the one you never begin.",
+
+    // Creative & Artistic
+    "Creativity is intelligence having fun.",
+    "The creative adult is the child who survived.",
+    "Imagination is more important than knowledge.",
+    "Art is the lie that enables us to realize the truth.",
+    "Creativity takes courage.",
+    "The worst enemy to creativity is self-doubt.",
+    "Creativity is a wild mind and a disciplined eye.",
+    "The creative process is a process of surrender, not control.",
+    "Creativity is the way I share my soul with the world.",
+    "The creative adult is the child who survived.",
+    "Imagination is the beginning of creation.",
+    "Creativity is intelligence having fun.",
+    "The creative process is a process of surrender, not control.",
+    "Creativity is the way I share my soul with the world.",
+    "The creative adult is the child who survived.",
+    "Imagination is the beginning of creation.",
+    "Creativity is intelligence having fun.",
+    "The creative process is a process of surrender, not control.",
+    "Creativity is the way I share my soul with the world.",
+    "The creative adult is the child who survived.",
+
+    // Problem Solving
+    "Every problem is a gift—without problems we would not grow.",
+    "The problem is not the problem. The problem is your attitude about the problem.",
+    "A problem is a chance for you to do your best.",
+    "The way to get started is to quit talking and begin doing.",
+    "Don't be afraid to give up the good to go for the great.",
+    "The only impossible journey is the one you never begin.",
+    "Success is walking from failure to failure with no loss of enthusiasm.",
+    "The harder you work for something, the greater you'll feel when you achieve it.",
+    "Dream big and dare to fail.",
+    "The future depends on what you do today.",
+    "Believe you can and you're halfway there.",
+    "The only person you are destined to become is the person you decide to be.",
+    "Your limitation—it's only your imagination.",
+    "Great things never come from comfort zones.",
+    "Dream it. Wish it. Do it.",
+    "Success doesn't just find you. You have to go out and get it.",
+    "The harder you work, the luckier you get.",
+    "Don't be afraid to give up the good to go for the great.",
+    "The only impossible journey is the one you never begin.",
+    "Success is walking from failure to failure with no loss of enthusiasm.",
+  ];
+
+  const randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
+
+  return `
+    <div class="text-ubuntu-cyan">
+      <div class="bg-ubuntu-dark p-4 rounded-lg border-l-4 border-ubuntu-orange">
+        <div class="flex items-start">
+          <span class="text-ubuntu-orange text-2xl mr-3">🔮</span>
+          <div>
+            <p class="text-ubuntu-white italic text-lg mb-2">"${randomFortune}"</p>
+            <p class="text-ubuntu-yellow text-sm">~ Fortune Cookie</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
 }
 
 function apisText(): string {
