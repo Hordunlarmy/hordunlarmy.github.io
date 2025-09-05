@@ -53,7 +53,7 @@ class DirectoryState {
     }
 
     // Check if target is a valid folder
-    const validFolders = ["personal_projects", "APIs", "container_services", "packages"];
+    const validFolders = ["projects", "APIs", "containers", "packages"];
     if (validFolders.includes(target)) {
       this.currentPath.push(target);
       return this.getCurrentPath();
@@ -71,7 +71,15 @@ class DirectoryState {
   public getAvailableFolders(): string[] {
     if (this.currentPath.length === 0) {
       // We're in root, show all folders
-      return ["personal_projects", "APIs", "container_services", "packages"];
+      return ["projects", "APIs", "containers", "packages"];
+    }
+    
+    // If we're in any specific folder, return that folder name for special handling
+    if (this.currentPath.length === 1) {
+      const currentFolder = this.currentPath[0];
+      if (["projects", "APIs", "containers", "packages"].includes(currentFolder)) {
+        return [currentFolder]; // This will be handled specially in the ls command
+      }
     }
     
     // For now, we don't have subdirectories, so return empty array

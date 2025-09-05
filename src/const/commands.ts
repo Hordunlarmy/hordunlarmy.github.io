@@ -1,24 +1,91 @@
 import { projects } from "./projects";
 import { directoryState } from "../classes/directory-state";
 
+// Dummy data for different folders
+const apisData = [
+  {
+    name: "Blog API",
+    description: "CRUD operations for blog posts",
+    link: "https://github.com/Hordunlarmy/APIs/tree/master/blogAPI",
+  },
+  {
+    name: "Library API",
+    description: "Book management system",
+    link: "https://github.com/Hordunlarmy/libraryAPI/tree/9fe8e6a3b6f8b750d2ef2fafc9bbc567cd4da294",
+  },
+  {
+    name: "SIWES API",
+    description: "SIWES management system",
+    link: "https://github.com/Hordunlarmy/APIs/tree/master/siwesAPI",
+  },
+  {
+    name: "Result Checker",
+    description: "School result checking system",
+    link: "https://github.com/Hordunlarmy/ResultChecker",
+  },
+];
+
+const containersData = [
+  {
+    name: "nginx-proxy",
+    description: "Reverse proxy with SSL termination",
+    link: "https://github.com/hordunlarmy/nginx-proxy",
+  },
+  {
+    name: "postgres-db",
+    description: "PostgreSQL database container",
+    link: "https://github.com/hordunlarmy/postgres-db",
+  },
+  {
+    name: "redis-cache",
+    description: "Redis caching layer",
+    link: "https://github.com/hordunlarmy/redis-cache",
+  },
+  {
+    name: "elasticsearch",
+    description: "Search and analytics engine",
+    link: "https://github.com/hordunlarmy/elasticsearch",
+  },
+  {
+    name: "prometheus",
+    description: "Monitoring and metrics collection",
+    link: "https://github.com/hordunlarmy/prometheus",
+  },
+];
+
+const packagesData = [
+  {
+    name: "oguild",
+    description:
+      "A comprehensive multi-language utilities pack providing essential tools and helper functions for modern software development",
+    link: "https://pypi.org/project/oguild/",
+  },
+  {
+    name: "devcommit",
+    description:
+      "A command-line AI tool for generating meaningful commit messages",
+    link: "https://pypi.org/project/DevCommit/",
+  },
+];
+
 const commands: Map<string, string> = new Map<string, string>();
 
 commands.set("motd", motdText());
-commands.set("whoami", "user");
-commands.set("touch", "Why would you touch anything?");
-commands.set("rm", "Why would you remove anything?");
+commands.set("whoami", "whoami");
 commands.set("cat", "Here's a cute cat for you! 😊");
-commands.set("about", aboutText());
+commands.set("about", "about");
 commands.set("date", new Date().toLocaleString());
-commands.set("projects", projectsText());
 commands.set("ubuntu", ubuntuLogo());
 commands.set("ls", foldersText());
 commands.set("cd", "Change directory");
 commands.set("pwd", "Print working directory");
 commands.set("github", openLink("https://github.com/hordunlarmy"));
 commands.set("linkedin", openLink("https://www.linkedin.com/in/hordunlarmy"));
-commands.set("repo", openLink("https://github.com/hordunlarmy/hordunlarmy.github.io"));
-commands.set("email", openLink("mailto:oliver.mrakovics@gmail.com"));
+commands.set(
+  "repo",
+  openLink("https://github.com/hordunlarmy/hordunlarmy.github.io")
+);
+commands.set("email", openLink("mailto:horduntech@gmail.com"));
 commands.set(
   "codersrank",
   openLink("https://profile.codersrank.io/user/hordunlarmy/")
@@ -30,7 +97,33 @@ commands.set(
 commands.set("techstack", techStack());
 commands.set("help", helpText());
 
-export const getCommandByName = (input: string): string => {
+// Create a map of all linkable items for easy lookup
+const linkableItems = new Map<string, string>();
+
+// Add all projects to linkable items
+projects.forEach(project => {
+  linkableItems.set(project.name.toLowerCase().replace(/\s+/g, ''), project.link);
+});
+
+// Add all APIs to linkable items
+apisData.forEach(api => {
+  linkableItems.set(api.name.toLowerCase().replace(/\s+/g, ''), api.link);
+});
+
+// Add all containers to linkable items
+containersData.forEach(container => {
+  linkableItems.set(container.name.toLowerCase().replace(/\s+/g, ''), container.link);
+});
+
+// Add all packages to linkable items
+packagesData.forEach(pkg => {
+  linkableItems.set(pkg.name.toLowerCase().replace(/\s+/g, ''), pkg.link);
+});
+
+export const getCommandByName = (
+  input: string,
+  username: string = "user"
+): string => {
   const parts = input.trim().split(" ");
   const command = parts[0].toLowerCase();
   const args = parts.slice(1);
@@ -55,7 +148,35 @@ export const getCommandByName = (input: string): string => {
       if (folders.length === 0) {
         return "No files or directories found.";
       }
+
+      // Special cases: show folder-specific content
+      if (folders.length === 1) {
+        switch (folders[0]) {
+          case "projects":
+            return projectsText();
+          case "APIs":
+            return apisText();
+          case "containers":
+            return containersText();
+          case "packages":
+            return packagesText();
+        }
+      }
+
       return foldersText(folders);
+    case "about":
+      return aboutText(username);
+    case "whoami":
+      return username;
+  }
+
+  // Check if it's a linkable item first
+  if (linkableItems.has(command)) {
+    const link = linkableItems.get(command);
+    if (link) {
+      window.open(link, "_blank");
+      return "";
+    }
   }
 
   // commands that require redirecting
@@ -64,13 +185,16 @@ export const getCommandByName = (input: string): string => {
       window.open("https://github.com/hordunlarmy", "_blank");
       break;
     case "repo":
-      window.open("https://github.com/hordunlarmy/hordunlarmy.github.io", "_blank");
+      window.open(
+        "https://github.com/hordunlarmy/hordunlarmy.github.io",
+        "_blank"
+      );
       break;
     case "linkedin":
       window.open("https://www.linkedin.com/in/hordunlarmy", "_blank");
       break;
     case "email":
-      window.open("mailto:oliver.mrakovics@gmail.com", "_blank");
+      window.open("mailto:horduntech@gmail.com", "_blank");
       break;
     case "codersrank":
       window.open("https://profile.codersrank.io/user/hordunlarmy/", "_blank");
@@ -93,7 +217,7 @@ export const getCommandNames = (): string[] => {
 };
 
 export const getFolderNames = (): string[] => {
-  return ["personal_projects", "APIs", "container_services", "packages"];
+  return ["projects", "APIs", "containers", "packages"];
 };
 
 export function motdText(): string {
@@ -116,35 +240,114 @@ export function motdText(): string {
 }
 
 function helpText(): string {
-  const commandNames: string[] = ["clear", "help"];
-  for (const entry of Array.from(commands.entries())) {
-    commandNames.push(entry[0]);
-  }
+  const basicCommands = [
+    "about",
+    "clear", 
+    "help",
+    "whoami"
+  ];
+
+  const navigationCommands = [
+    "cd [directory]",
+    "ls",
+    "pwd"
+  ];
+
+  const socialCommands = [
+    "github",
+    "linkedin", 
+    "email",
+    "codersrank",
+    "socials"
+  ];
+
+  const specialCommands = [
+    "ubuntu",
+    "cat",
+    "date"
+  ];
+
+  // Add some popular project/package names to help
+  const popularItems = [
+    "devcommit",
+    "stealthportal", 
+    "eduhub",
+    "oguild",
+    "blogapi",
+    "libraryapi",
+    "nginx-proxy",
+    "postgres-db"
+  ];
+
+  const availableDirectories = [
+    "projects",
+    "APIs", 
+    "containers",
+    "packages"
+  ];
 
   return `
-    Usage: [command] [options]
-    <br>
-    <br>
-
-    ${commandNames.sort().join(", ")}
+    <div class="text-ubuntu-white">
+      <span class="text-ubuntu-orange font-bold text-lg">Available Commands</span>
+      <br><br>
+      
+      <span class="text-ubuntu-green font-bold">📁 Navigation:</span>
+      <br>
+      ${navigationCommands.map(cmd => `&nbsp;&nbsp;${cmd}`).join("<br>")}
+      <br><br>
+      
+      <span class="text-ubuntu-blue font-bold">ℹ️  Information:</span>
+      <br>
+      ${basicCommands.map(cmd => `&nbsp;&nbsp;${cmd}`).join("<br>")}
+      <br><br>
+      
+      <span class="text-ubuntu-yellow font-bold">🔗 Social Links:</span>
+      <br>
+      ${socialCommands.map(cmd => `&nbsp;&nbsp;${cmd}`).join("<br>")}
+      <br><br>
+      
+      <span class="text-ubuntu-cyan font-bold">🎯 Special:</span>
+      <br>
+      ${specialCommands.map(cmd => `&nbsp;&nbsp;${cmd}`).join("<br>")}
+      <br><br>
+      
+      <span class="text-ubuntu-orange font-bold">📂 Directories:</span>
+      <br>
+      ${availableDirectories.map(dir => `&nbsp;&nbsp;cd ${dir}`).join("<br>")}
+      <br><br>
+      
+      <span class="text-ubuntu-green font-bold">⚡ Quick Access (type any name to open):</span>
+      <br>
+      ${popularItems.join(", ")}
+      <br><br>
+      
+      <div class="text-ubuntu-white text-sm bg-ubuntu-dark p-2 rounded">
+        <span class="text-ubuntu-orange font-bold">💡 Tips:</span>
+        <br>
+        • Use <span class="text-ubuntu-yellow">cd [directory]</span> to navigate into folders
+        <br>
+        • Use <span class="text-ubuntu-yellow">ls</span> to see contents of current directory
+        <br>
+        • Type any project/API/container/package name to open it directly
+        <br>
+        • Use <span class="text-ubuntu-yellow">cd ..</span> to go back to parent directory
+      </div>
+    </div>
   `;
 }
 
-function aboutText(): string {
+function aboutText(username: string = "user"): string {
   return `
-    Hello, user!
+    Hello, ${username}!
     <br><br>
 
-    Passionate about web development, I am an experienced <span class="terminal-bold">full-stack engineer</span> specializing in <span class="terminal-bold">front-end development</span>.
-    Beginning my coding journey at the age of <span class="terminal-bold">12</span>, I have grown into a <span class="terminal-bold">national champion</span>, demonstrating my dedication and expertise in the field.<br><br>
+    I'm a <span class="terminal-bold">backend and DevOps engineer</span> with a strong focus on building reliable, scalable, and secure systems. My expertise spans <span class="terminal-bold">API development with Python/FastAPI</span>, <span class="terminal-bold">database design and optimization with PostgreSQL and MongoDB</span>, and <span class="terminal-bold">real-time event-driven architectures with Redis</span>.<br><br>
 
-    My focus on delivering high-quality applications is fueled by a genuine interest in leading technologies, specifically <span class="terminal-bold">React and TypeScript</span>.
-    With hands-on experience in various JavaScript frameworks and libraries such as <span class="terminal-bold">Next.js, NodeJS, and Express</span>, I bring a versatile skill set to each project.
-    I also have a strong background in SQL databases.<br><br>
+    On the infrastructure side, I work with <span class="terminal-bold">Docker and Kubernetes</span> to containerize, orchestrate, and scale applications, while leveraging <span class="terminal-bold">CI/CD pipelines</span> to streamline deployments. I'm passionate about designing resilient architectures, automating workflows, and ensuring that systems perform smoothly in production.<br><br>
 
     Would you like to connect with me? Enter the 'socials' command!<br>
     Want to take a look at my projects? 
-    Enter the 'projects' command or visit my GitHub with the 'github' command!
+    Navigate to the 'projects' folder with 'cd projects' and use 'ls' to see them, or visit my GitHub with the 'github' command!
   `;
 }
 
@@ -158,29 +361,35 @@ function openLink(link: string): string {
 
 function projectsText(): string {
   return `
-    ${projects
-      .map((project) => {
-        return `
-        <a 
-          class="project-${project.category}"
-          href="${project.link}"
-          target="_blank"
-          rel="noreferrer"
-        >${project.name}</a>`;
-      })
-      .join("&nbsp;&nbsp;&nbsp;")}
+    <div class="text-ubuntu-green">
+      ${projects
+        .map((project) => {
+          return `
+          <div class="mb-2">
+            <a 
+              class="text-ubuntu-orange font-bold hover:text-ubuntu-yellow terminal-link" 
+              href="${project.link}" 
+              target="_blank" 
+              rel="noreferrer"
+            >${project.name}</a>
+            <br>
+            <span class="text-ubuntu-white text-sm ml-4">${project.description}</span>
+          </div>`;
+        })
+        .join("")}
+    </div>
   `;
 }
 
 function foldersText(folders?: string[]): string {
-  const defaultFolders = ["personal_projects", "APIs", "container_services", "packages"];
+  const defaultFolders = ["projects", "APIs", "containers", "packages"];
   const foldersToShow = folders || defaultFolders;
-  
+
   const folderColors: { [key: string]: string } = {
-    "personal_projects": "text-ubuntu-green",
-    "APIs": "text-ubuntu-blue", 
-    "container_services": "text-ubuntu-yellow",
-    "packages": "text-ubuntu-cyan"
+    projects: "text-ubuntu-green",
+    APIs: "text-ubuntu-blue",
+    containers: "text-ubuntu-yellow",
+    packages: "text-ubuntu-cyan",
   };
 
   return `
@@ -211,3 +420,70 @@ function ubuntuLogo() {
 function techStack() {
   return `<a href="https://github.com/hordunlarmy/github-readme-tech-stack" target="_blank"><img src="https://github-readme-tech-stack.vercel.app/api/cards?title=Tech+Stack&width=420&align=center&titleAlign=center&fontSize=20&lineHeight=10&lineCount=2&theme=hordunlarmy&line1=node.js%2Cnode.js%2Cauto%3Bexpress%2Cexpress%2Cffffff%3Bnestjs%2Cnestjs%2Ce12a54%3B&line2=react%2Creact%2Cauto%3Btailwindcss%2Ctailwind%2Cauto%3Btypescript%2Ctypescript%2Cauto%3B" alt="Tech Stack" /></a>`;
 }
+
+function apisText(): string {
+  return `
+    <div class="text-ubuntu-blue">
+      ${apisData
+        .map((api) => {
+          return `
+          <div class="mb-2">
+            <a 
+              class="text-ubuntu-orange font-bold hover:text-ubuntu-yellow terminal-link" 
+              href="${api.link}" 
+              target="_blank" 
+              rel="noreferrer"
+            >${api.name}</a>
+            <br>
+            <span class="text-ubuntu-white text-sm ml-4">${api.description}</span>
+          </div>`;
+        })
+        .join("")}
+    </div>
+  `;
+}
+
+function containersText(): string {
+  return `
+    <div class="text-ubuntu-yellow">
+      ${containersData
+        .map((container) => {
+          return `
+          <div class="mb-2">
+            <a 
+              class="text-ubuntu-orange font-bold hover:text-ubuntu-yellow terminal-link" 
+              href="${container.link}" 
+              target="_blank" 
+              rel="noreferrer"
+            >${container.name}</a>
+            <br>
+            <span class="text-ubuntu-white text-sm ml-4">${container.description}</span>
+          </div>`;
+        })
+        .join("")}
+    </div>
+  `;
+}
+
+function packagesText(): string {
+  return `
+    <div class="text-ubuntu-cyan">
+      ${packagesData
+        .map((pkg) => {
+          return `
+          <div class="mb-2">
+            <a 
+              class="text-ubuntu-orange font-bold hover:text-ubuntu-yellow terminal-link" 
+              href="${pkg.link}" 
+              target="_blank" 
+              rel="noreferrer"
+            >${pkg.name}</a>
+            <br>
+            <span class="text-ubuntu-white text-sm ml-4">${pkg.description}</span>
+          </div>`;
+        })
+        .join("")}
+    </div>
+  `;
+}
+

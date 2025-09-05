@@ -45,7 +45,7 @@ const TerminalContainer: React.FC<TerminalContainerProps> = ({ isVisible, onClos
 
     setPrompts((prev) => {
       // Execute the command first (this may change the directory)
-      prev[prev.length - 1].handleEnterClick(promptText);
+      prev[prev.length - 1].handleEnterClick(promptText, username);
       
       // After command execution, update the current path for the NEXT prompt
       setCurrentPath(directoryState.getCurrentPath());
