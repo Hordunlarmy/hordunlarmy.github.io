@@ -65,6 +65,19 @@ const TerminalContainer: React.FC<TerminalContainerProps> = ({ isVisible, onClos
     [prompts, promptText]
   );
 
+  // Focus terminal when it becomes visible
+  useEffect(() => {
+    if (isVisible) {
+      setTimeout(() => {
+        const terminalElement = document.querySelector('section[tabindex="0"]') as HTMLElement;
+        if (terminalElement) {
+          terminalElement.focus();
+        }
+      }, 100);
+    }
+  }, [isVisible]);
+
+
   const handleMouseDown = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget || (e.target as HTMLElement).closest('.terminal-title')) {
       setIsDragging(true);
@@ -110,6 +123,16 @@ const TerminalContainer: React.FC<TerminalContainerProps> = ({ isVisible, onClos
         marginTop: '10vh'
       }}
       onMouseDown={handleMouseDown}
+      tabIndex={0}
+      onTouchStart={() => {
+        // Focus the terminal when touched on mobile
+        if (isMobile) {
+          (document.activeElement as HTMLElement)?.blur();
+          setTimeout(() => {
+            (document.querySelector('section[tabindex="0"]') as HTMLElement)?.focus();
+          }, 100);
+        }
+      }}
     >
       <TerminalTitle
         closeTerminal={onClose}
@@ -117,14 +140,10 @@ const TerminalContainer: React.FC<TerminalContainerProps> = ({ isVisible, onClos
       />
 
       <div
-        className="px-4 py-3 text-ubuntu-gray text-sm w-full flex-1 min-h-0
-          overflow-y-auto terminal-scrollbar"
+        className={`px-4 py-3 text-ubuntu-gray text-sm w-full flex-1 min-h-0
+          overflow-y-auto terminal-scrollbar
+          ${isMobile ? 'overflow-x-hidden break-words whitespace-pre-wrap' : ''}`}
       >
-        {isMobile && (
-          <ResultDiv
-            text={`<span class="text-ubuntu-red-dark">Err: This site does not work on devices without a physical keyboard.</span>`}
-          />
-        )}
         {isMotdVisible && <ResultDiv text={motdText()} />}
 
         {prompts.map((prompt) => {

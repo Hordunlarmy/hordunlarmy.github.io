@@ -25,6 +25,21 @@
   }
 }
 
+/* Mobile-only text wrapping fixes */
+@media (max-width: 768px) {
+  .terminal-scrollbar {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+  
+  .terminal-scrollbar * {
+    max-width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+}
+
 .project-frontend {
   @apply hover:underline text-ubuntu-green cursor-default whitespace-nowrap;
 }
