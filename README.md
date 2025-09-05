@@ -1,6 +1,6 @@
-<h1><a href="https://hordunlarmy.github.io/" target="_blank">hordunlarmy - Terminal Website</a></h1>
+<h1><a href="https://hordunlarmy.github.io/" target="_blank">Hordunlarmy - Terminal Website</a></h1>
 
-This is a Kali Linux Terminal-like personal website.
+This is an Ubuntu Terminal-like personal website.
 
 <img src="./screenshots/screenshot.png" alt="screenshot">
 
@@ -8,7 +8,7 @@ This is a Kali Linux Terminal-like personal website.
 
 ## Features
 
-- Kali Linux-like interface
+- Ubuntu-like interface
 - Fun commands
 - Tab autocomplete
 - Hotkeys
@@ -34,3 +34,4 @@ npm i
 # 3. Run the app
 npm start
 ```
+
