@@ -1,4 +1,5 @@
 import { useKeyboardInput } from "../../hooks/useKeyboardInput";
+import { useMobileKeyboardInput } from "../../hooks/useMobileKeyboardInput";
 import { useEffect, useRef, useState } from "react";
 import Prompt from "./Prompt";
 import TerminalTitle from "./TerminalTitle";
@@ -55,11 +56,20 @@ const TerminalContainer: React.FC<TerminalContainerProps> = ({ isVisible, onClos
     });
   };
 
-  const promptText = useKeyboardInput(handleEnterPress, () => {
+  // Use different keyboard input hooks for mobile and desktop
+  const desktopPromptText = useKeyboardInput(handleEnterPress, () => {
     setPrompts([new PromptSession()]);
     setIsMotdVisible(false);
     setCurrentPath(directoryState.getCurrentPath());
-  }, !isLocked);
+  }, !isLocked && !isMobile);
+
+  const mobileKeyboard = useMobileKeyboardInput(handleEnterPress, () => {
+    setPrompts([new PromptSession()]);
+    setIsMotdVisible(false);
+    setCurrentPath(directoryState.getCurrentPath());
+  }, !isLocked && isMobile);
+
+  const promptText = isMobile ? mobileKeyboard.inputValue : desktopPromptText;
 
   useEffect(
     () => bottomRef.current?.scrollIntoView({ behavior: "smooth" }),
@@ -82,29 +92,7 @@ const TerminalContainer: React.FC<TerminalContainerProps> = ({ isVisible, onClos
     }
   }, [isVisible, isMobile]);
 
-  // Handle mobile input
-  const handleMobileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // This will be handled by the keyboard input hook
-  };
-
-  const handleMobileKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    // Prevent default to avoid double handling
-    e.preventDefault();
-    
-    // Create a synthetic keyboard event for the keyboard input hook
-    const syntheticEvent = new KeyboardEvent('keydown', {
-      key: e.key,
-      code: e.code,
-      shiftKey: e.shiftKey,
-      ctrlKey: e.ctrlKey,
-      altKey: e.altKey,
-      metaKey: e.metaKey,
-      isComposing: false
-    });
-    
-    // Dispatch the event to the document so the keyboard hook can catch it
-    document.dispatchEvent(syntheticEvent);
-  };
+  // Mobile input handlers are now handled by the mobile keyboard hook
 
 
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -144,12 +132,12 @@ const TerminalContainer: React.FC<TerminalContainerProps> = ({ isVisible, onClos
         border border-solid border-ubuntu-border font-fira-code 
         text-sm shadow-terminal flex flex-col overflow-hidden 
         resize ${terminalClasses} transition-all duration-100
-        mx-auto ${isMobile ? 'max-w-[95vw] h-[80vh] max-h-[80vh]' : ''}`}
+        mx-auto ${isMobile ? 'max-w-[95vw] h-[85vh] max-h-[85vh]' : ''}`}
       style={{ 
         position: 'relative',
         transform: isMobile ? 'none' : `translate(${position.x}px, ${position.y}px)`,
         cursor: isDragging ? 'grabbing' : 'default',
-        marginTop: isMobile ? '5vh' : '10vh',
+        marginTop: isMobile ? '2vh' : '10vh',
         marginLeft: isMobile ? '2.5vw' : 'auto',
         marginRight: isMobile ? '2.5vw' : 'auto'
       }}
@@ -160,6 +148,8 @@ const TerminalContainer: React.FC<TerminalContainerProps> = ({ isVisible, onClos
         if (isMobile && mobileInputRef.current) {
           setTimeout(() => {
             mobileInputRef.current?.focus();
+            // Ensure the input is visible to the virtual keyboard
+            mobileInputRef.current?.click();
           }, 100);
         }
       }}
@@ -172,7 +162,7 @@ const TerminalContainer: React.FC<TerminalContainerProps> = ({ isVisible, onClos
       <div
         className={`px-4 py-3 text-ubuntu-gray text-sm w-full flex-1 min-h-0
           overflow-y-auto terminal-scrollbar
-          ${isMobile ? 'overflow-x-hidden break-words whitespace-pre-wrap' : ''}`}
+          ${isMobile ? 'overflow-x-hidden' : ''}`}
       >
         {isMotdVisible && <ResultDiv text={motdText()} />}
 
@@ -201,13 +191,24 @@ const TerminalContainer: React.FC<TerminalContainerProps> = ({ isVisible, onClos
         <input
           ref={mobileInputRef}
           type="text"
-          className="absolute opacity-0 pointer-events-none"
-          onChange={handleMobileInputChange}
-          onKeyDown={handleMobileKeyDown}
+          className="absolute opacity-0 pointer-events-auto w-full h-full top-0 left-0 z-10"
+          value={mobileKeyboard.inputValue}
+          onChange={mobileKeyboard.handleInputChange}
+          onKeyDown={mobileKeyboard.handleKeyDown}
           autoComplete="off"
           autoCorrect="off"
           autoCapitalize="off"
           spellCheck="false"
+          style={{ 
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            opacity: 0,
+            zIndex: 10,
+            pointerEvents: 'auto'
+          }}
         />
       )}
     </section>

@@ -25,18 +25,153 @@
   }
 }
 
-/* Mobile-only text wrapping fixes */
+/* Mobile-only fixes for terminal content */
 @media (max-width: 768px) {
+  /* Reset any problematic mobile styles */
   .terminal-scrollbar {
     word-wrap: break-word;
     overflow-wrap: break-word;
     word-break: break-word;
   }
   
+  /* Ensure all flex layouts work properly on mobile */
   .terminal-scrollbar * {
+    box-sizing: border-box;
+  }
+  
+  /* Force flex containers to maintain their layout */
+  .terminal-scrollbar .flex {
+    display: flex !important;
+    max-width: none !important;
+    word-wrap: normal !important;
+    overflow-wrap: normal !important;
+    white-space: normal !important;
+  }
+  
+  .terminal-scrollbar .flex.items-center {
+    align-items: center !important;
+    flex-wrap: nowrap !important;
+  }
+  
+  .terminal-scrollbar .flex.flex-col {
+    flex-direction: column !important;
+  }
+  
+  .terminal-scrollbar .flex.flex-row {
+    flex-direction: row !important;
+  }
+  
+  /* Ensure all spacing classes work */
+  .terminal-scrollbar .mr-1 { margin-right: 0.25rem !important; }
+  .terminal-scrollbar .mr-2 { margin-right: 0.5rem !important; }
+  .terminal-scrollbar .mr-3 { margin-right: 0.75rem !important; }
+  .terminal-scrollbar .mr-4 { margin-right: 1rem !important; }
+  .terminal-scrollbar .ml-1 { margin-left: 0.25rem !important; }
+  .terminal-scrollbar .ml-2 { margin-left: 0.5rem !important; }
+  .terminal-scrollbar .ml-3 { margin-left: 0.75rem !important; }
+  .terminal-scrollbar .ml-4 { margin-left: 1rem !important; }
+  
+  /* Ensure gap classes work */
+  .terminal-scrollbar .gap-1 { gap: 0.25rem !important; }
+  .terminal-scrollbar .gap-2 { gap: 0.5rem !important; }
+  .terminal-scrollbar .gap-3 { gap: 0.75rem !important; }
+  .terminal-scrollbar .gap-4 { gap: 1rem !important; }
+  .terminal-scrollbar .gap-6 { gap: 1.5rem !important; }
+  
+  /* Ensure grid layouts work */
+  .terminal-scrollbar .grid {
+    display: grid !important;
+    max-width: none !important;
+  }
+  
+  /* Fix text content that should wrap */
+  .terminal-scrollbar p,
+  .terminal-scrollbar .text-sm,
+  .terminal-scrollbar .text-xs {
     max-width: 100%;
     word-wrap: break-word;
     overflow-wrap: break-word;
+  }
+  
+  /* Ensure proper spacing for non-breaking spaces and HTML content */
+  .terminal-scrollbar span {
+    white-space: normal !important;
+  }
+  
+  /* Fix any issues with dangerouslySetInnerHTML content */
+  .terminal-scrollbar [dangerouslySetInnerHTML] {
+    white-space: normal !important;
+  }
+  
+  /* Ensure proper line height and spacing */
+  .terminal-scrollbar {
+    line-height: 1.5 !important;
+  }
+  
+  /* Fix any potential issues with text rendering */
+  .terminal-scrollbar * {
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  /* Ensure consistent font rendering on mobile */
+  .terminal-scrollbar .font-fira-code {
+    font-family: 'Fira Code', monospace !important;
+    font-variant-ligatures: none !important;
+    letter-spacing: normal !important;
+    word-spacing: normal !important;
+  }
+  
+  /* Fix any potential issues with monospace font spacing */
+  .terminal-scrollbar code,
+  .terminal-scrollbar pre,
+  .terminal-scrollbar .font-mono {
+    font-family: 'Fira Code', monospace !important;
+    white-space: normal !important;
+  }
+  
+  /* Fix Tailwind space utilities */
+  .terminal-scrollbar .space-y-2 > * + * {
+    margin-top: 0.5rem !important;
+  }
+  
+  .terminal-scrollbar .space-y-4 > * + * {
+    margin-top: 1rem !important;
+  }
+  
+  /* Fix non-breaking spaces rendering */
+  .terminal-scrollbar .font-mono span {
+    white-space: pre !important;
+  }
+  
+  /* Ensure proper spacing for all margin classes */
+  .terminal-scrollbar .mb-2 { margin-bottom: 0.5rem !important; }
+  .terminal-scrollbar .mb-4 { margin-bottom: 1rem !important; }
+  .terminal-scrollbar .mt-6 { margin-top: 1.5rem !important; }
+  .terminal-scrollbar .p-3 { padding: 0.75rem !important; }
+  
+  /* Ensure proper rendering of HTML entities and spacing */
+  .terminal-scrollbar {
+    white-space: normal !important;
+  }
+  
+  /* Special handling for monospace content with non-breaking spaces */
+  .terminal-scrollbar .font-mono {
+    white-space: pre !important;
+  }
+  
+  .terminal-scrollbar .font-mono span {
+    white-space: pre !important;
+  }
+  
+  /* Ensure flex items don't have white-space issues */
+  .terminal-scrollbar .flex {
+    white-space: normal !important;
+  }
+  
+  .terminal-scrollbar .flex * {
+    white-space: normal !important;
   }
 }
 
