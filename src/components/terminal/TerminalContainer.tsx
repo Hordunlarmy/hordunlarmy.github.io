@@ -25,6 +25,7 @@ const TerminalContainer: React.FC<TerminalContainerProps> = ({ isVisible, onClos
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const mobileInputRef = useRef<HTMLInputElement>(null);
   
   const terminalClasses = isVisible ? "scale-100 opacity-100" : "scale-0 opacity-0";
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -69,13 +70,41 @@ const TerminalContainer: React.FC<TerminalContainerProps> = ({ isVisible, onClos
   useEffect(() => {
     if (isVisible) {
       setTimeout(() => {
-        const terminalElement = document.querySelector('section[tabindex="0"]') as HTMLElement;
-        if (terminalElement) {
-          terminalElement.focus();
+        if (isMobile && mobileInputRef.current) {
+          mobileInputRef.current.focus();
+        } else {
+          const terminalElement = document.querySelector('section[tabindex="0"]') as HTMLElement;
+          if (terminalElement) {
+            terminalElement.focus();
+          }
         }
       }, 100);
     }
-  }, [isVisible]);
+  }, [isVisible, isMobile]);
+
+  // Handle mobile input
+  const handleMobileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // This will be handled by the keyboard input hook
+  };
+
+  const handleMobileKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    // Prevent default to avoid double handling
+    e.preventDefault();
+    
+    // Create a synthetic keyboard event for the keyboard input hook
+    const syntheticEvent = new KeyboardEvent('keydown', {
+      key: e.key,
+      code: e.code,
+      shiftKey: e.shiftKey,
+      ctrlKey: e.ctrlKey,
+      altKey: e.altKey,
+      metaKey: e.metaKey,
+      isComposing: false
+    });
+    
+    // Dispatch the event to the document so the keyboard hook can catch it
+    document.dispatchEvent(syntheticEvent);
+  };
 
 
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -115,21 +144,22 @@ const TerminalContainer: React.FC<TerminalContainerProps> = ({ isVisible, onClos
         border border-solid border-ubuntu-border font-fira-code 
         text-sm shadow-terminal flex flex-col overflow-hidden 
         resize ${terminalClasses} transition-all duration-100
-        mx-auto`}
+        mx-auto ${isMobile ? 'max-w-[95vw] h-[80vh] max-h-[80vh]' : ''}`}
       style={{ 
         position: 'relative',
-        transform: `translate(${position.x}px, ${position.y}px)`,
+        transform: isMobile ? 'none' : `translate(${position.x}px, ${position.y}px)`,
         cursor: isDragging ? 'grabbing' : 'default',
-        marginTop: '10vh'
+        marginTop: isMobile ? '5vh' : '10vh',
+        marginLeft: isMobile ? '2.5vw' : 'auto',
+        marginRight: isMobile ? '2.5vw' : 'auto'
       }}
       onMouseDown={handleMouseDown}
       tabIndex={0}
       onTouchStart={() => {
-        // Focus the terminal when touched on mobile
-        if (isMobile) {
-          (document.activeElement as HTMLElement)?.blur();
+        // Focus the mobile input when touched on mobile
+        if (isMobile && mobileInputRef.current) {
           setTimeout(() => {
-            (document.querySelector('section[tabindex="0"]') as HTMLElement)?.focus();
+            mobileInputRef.current?.focus();
           }, 100);
         }
       }}
@@ -165,6 +195,21 @@ const TerminalContainer: React.FC<TerminalContainerProps> = ({ isVisible, onClos
 
         <div ref={bottomRef} />
       </div>
+
+      {/* Hidden mobile input for virtual keyboard */}
+      {isMobile && (
+        <input
+          ref={mobileInputRef}
+          type="text"
+          className="absolute opacity-0 pointer-events-none"
+          onChange={handleMobileInputChange}
+          onKeyDown={handleMobileKeyDown}
+          autoComplete="off"
+          autoCorrect="off"
+          autoCapitalize="off"
+          spellCheck="false"
+        />
+      )}
     </section>
   );
 };
