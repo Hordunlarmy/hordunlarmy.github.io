@@ -338,16 +338,31 @@ function helpText(): string {
 
 function aboutText(username: string = "user"): string {
   return `
-    Hello, ${username}!
-    <br><br>
+    <div class="flex flex-col md:flex-row items-start gap-4">
+      <div class="flex-shrink-0">
+        <img 
+          src="./profile.jpeg" 
+          alt="Profile Picture" 
+          class="w-32 h-32 rounded-full border-2 border-ubuntu-orange object-cover shadow-lg"
+        />
+      </div>
+      <div class="flex-1">
+        <h2 class="text-ubuntu-orange font-bold text-xl mb-2">Hello, ${username}!</h2>
+        
+        <p class="text-ubuntu-white mb-4">
+          I'm a <span class="terminal-bold">backend and DevOps engineer</span> with a strong focus on building reliable, scalable, and secure systems. My expertise spans <span class="terminal-bold">API development with Python/FastAPI</span>, <span class="terminal-bold">database design and optimization with PostgreSQL and MongoDB</span>, and <span class="terminal-bold">real-time event-driven architectures with Redis</span>.
+        </p>
 
-    I'm a <span class="terminal-bold">backend and DevOps engineer</span> with a strong focus on building reliable, scalable, and secure systems. My expertise spans <span class="terminal-bold">API development with Python/FastAPI</span>, <span class="terminal-bold">database design and optimization with PostgreSQL and MongoDB</span>, and <span class="terminal-bold">real-time event-driven architectures with Redis</span>.<br><br>
+        <p class="text-ubuntu-white mb-4">
+          On the infrastructure side, I work with <span class="terminal-bold">Docker and Kubernetes</span> to containerize, orchestrate, and scale applications, while leveraging <span class="terminal-bold">CI/CD pipelines</span> to streamline deployments. I'm passionate about designing resilient architectures, automating workflows, and ensuring that systems perform smoothly in production.
+        </p>
 
-    On the infrastructure side, I work with <span class="terminal-bold">Docker and Kubernetes</span> to containerize, orchestrate, and scale applications, while leveraging <span class="terminal-bold">CI/CD pipelines</span> to streamline deployments. I'm passionate about designing resilient architectures, automating workflows, and ensuring that systems perform smoothly in production.<br><br>
-
-    Would you like to connect with me? Enter the 'socials' command!<br>
-    Want to take a look at my projects? 
-    Navigate to the 'projects' folder with 'cd projects' and use 'ls' to see them, or visit my GitHub with the 'github' command!
+        <div class="text-ubuntu-white">
+          <p class="mb-2">Would you like to connect with me? Enter the <span class="text-ubuntu-yellow">'socials'</span> command!</p>
+          <p>Want to take a look at my projects? Navigate to the <span class="text-ubuntu-green">'projects'</span> folder with <span class="text-ubuntu-yellow">'cd projects'</span> and use <span class="text-ubuntu-yellow">'ls'</span> to see them, or visit my GitHub with the <span class="text-ubuntu-yellow">'github'</span> command!</p>
+        </div>
+      </div>
+    </div>
   `;
 }
 
