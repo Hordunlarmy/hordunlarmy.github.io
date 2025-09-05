@@ -186,12 +186,12 @@ const TerminalContainer: React.FC<TerminalContainerProps> = ({ isVisible, onClos
         <div ref={bottomRef} />
       </div>
 
-      {/* Hidden mobile input for virtual keyboard */}
+      {/* Hidden mobile input for virtual keyboard - positioned at bottom for prompt area */}
       {isMobile && (
         <input
           ref={mobileInputRef}
           type="text"
-          className="absolute opacity-0 pointer-events-auto w-full h-full top-0 left-0 z-10"
+          className="absolute opacity-0 pointer-events-auto bottom-0 left-0 right-0 z-10"
           value={mobileKeyboard.inputValue}
           onChange={mobileKeyboard.handleInputChange}
           onKeyDown={mobileKeyboard.handleKeyDown}
@@ -201,10 +201,10 @@ const TerminalContainer: React.FC<TerminalContainerProps> = ({ isVisible, onClos
           spellCheck="false"
           style={{ 
             position: 'absolute',
-            top: 0,
+            bottom: 0,
             left: 0,
-            width: '100%',
-            height: '100%',
+            right: 0,
+            height: '60px', // Only cover the bottom area where prompts appear
             opacity: 0,
             zIndex: 10,
             pointerEvents: 'auto'

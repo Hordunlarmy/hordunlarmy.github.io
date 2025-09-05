@@ -230,7 +230,7 @@ export function motdText(): string {
   return `
     <div class="text-ubuntu-white">
       <div class="text-ubuntu-orange font-bold text-xl mb-4">
-        🌟 Welcome to hordunlarmy.github.io! 🌟
+        🌟 Welcome! 🌟
       </div>
       
       <div class="space-y-2">
