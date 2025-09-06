@@ -90,11 +90,14 @@ commands.set(
   "codersrank",
   openLink("https://profile.codersrank.io/user/hordunlarmy/")
 );
+commands.set("twitter", openLink("https://x.com/horduntech"));
 commands.set(
   "socials",
-  "Usage: [command]<br><br>github, linkedin, email, codersrank"
+  "Usage: [command]<br><br>linkedin, codersrank, twitter"
 );
 commands.set("techstack", techStack());
+commands.set("stats", statsDisplay());
+commands.set("cv", cvDisplay());
 commands.set("help", helpText());
 
 // Create a map of all linkable items for easy lookup
@@ -205,6 +208,9 @@ export const getCommandByName = (
     case "codersrank":
       window.open("https://profile.codersrank.io/user/hordunlarmy/", "_blank");
       break;
+    case "twitter":
+      window.open("https://x.com/horduntech", "_blank");
+      break;
     case "cat":
       window.open("https://cataas.com/cat/cute", "_blank");
       break;
@@ -264,19 +270,13 @@ export function motdText(): string {
 }
 
 function helpText(): string {
-  const basicCommands = ["about", "clear", "help", "whoami"];
+  const basicCommands = ["about", "help", "cv", "stats"];
 
-  const navigationCommands = ["cd [directory]", "ls", "pwd"];
+  const navigationCommands = ["cd [directory]", "ls", "clear"];
 
-  const socialCommands = [
-    "github",
-    "linkedin",
-    "email",
-    "codersrank",
-    "socials",
-  ];
+  const socialCommands = ["github", "email", "socials"];
 
-  const specialCommands = ["ubuntu", "cat", "fortune"];
+  const specialCommands = ["ubuntu", "cat", "fortune", "whoami"];
 
   // Add some popular project/package names to help
   const popularItems = ["devcommit", "stealthportal", "eduhub", "oguild"];
@@ -370,6 +370,7 @@ function aboutText(username: string = "user"): string {
 
         <div class="text-ubuntu-white">
           <p class="mb-2">Would you like to connect with me? Enter the <span class="text-ubuntu-yellow">'socials'</span> command!</p>
+          <p class="mb-2">Want to see my CV? Type <span class="text-ubuntu-yellow">'cv'</span> to view it directly in the terminal!</p>
           <p>Want to take a look at my projects? Navigate to the <span class="text-ubuntu-green">'projects'</span> folder with <span class="text-ubuntu-yellow">'cd projects'</span> and use <span class="text-ubuntu-yellow">'ls'</span> to see them, or visit my GitHub with the <span class="text-ubuntu-yellow">'github'</span> command!</p>
         </div>
       </div>
@@ -444,7 +445,39 @@ function ubuntuLogo() {
 }
 
 function techStack() {
-  return `<a href="https://github.com/hordunlarmy/github-readme-tech-stack" target="_blank"><img src="https://github-readme-tech-stack.vercel.app/api/cards?title=Tech+Stack&width=420&align=center&titleAlign=center&fontSize=20&lineHeight=10&lineCount=2&theme=hordunlarmy&line1=node.js%2Cnode.js%2Cauto%3Bexpress%2Cexpress%2Cffffff%3Bnestjs%2Cnestjs%2Ce12a54%3B&line2=react%2Creact%2Cauto%3Btailwindcss%2Ctailwind%2Cauto%3Btypescript%2Ctypescript%2Cauto%3B" alt="Tech Stack" /></a>`;
+  return `
+    <div class="text-center">
+      <h2 class="text-ubuntu-orange font-bold text-xl mb-4">💻 Tech Stack:</h2>
+      <div class="flex flex-wrap justify-center gap-2">
+        <img src="https://img.shields.io/badge/c-%2300599C.svg?style=for-the-badge&logo=c&logoColor=white" alt="C">
+        <img src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54" alt="Python">
+        <img src="https://img.shields.io/badge/django-%23092E20.svg?style=for-the-badge&logo=django&logoColor=white" alt="Django">
+        <img src="https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi" alt="FastAPI">
+        <img src="https://img.shields.io/badge/flask-%23000.svg?style=for-the-badge&logo=flask&logoColor=white" alt="Flask">
+        <img src="https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E" alt="JavaScript">
+        <img src="https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white">
+        <img src="https://img.shields.io/badge/shell_script-%23121011.svg?style=for-the-badge&logo=gnu-bash&logoColor=white" alt="Shell Script">
+        <img src="https://img.shields.io/badge/vagrant-%231563FF.svg?style=for-the-badge&logo=vagrant&logoColor=white" alt="Vagrant">
+        <img src="https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white" alt="Docker">
+        <img src="https://img.shields.io/badge/Socket.io-black?style=for-the-badge&logo=socket.io&badgeColor=010101" alt="Socket">
+        <img src="https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white" alt="aws">
+        <img src="https://img.shields.io/badge/DigitalOcean-%230167ff.svg?style=for-the-badge&logo=digitalOcean&logoColor=white">
+        <img src="https://img.shields.io/badge/heroku-%23430098.svg?style=for-the-badge&logo=heroku&logoColor=white" alt="heroku">
+        <img src="https://img.shields.io/badge/NeoVim-%2357A143.svg?&style=for-the-badge&logo=neovim&logoColor=white" alt="nvim">
+      </div>
+    </div>
+  `;
+}
+
+function statsDisplay() {
+  return `
+    <div class="text-center">
+      <h2 class="text-ubuntu-orange font-bold text-xl mb-4">📊 GitHub Stats:</h2>
+      <div class="flex justify-center">
+        <img src="https://github-readme-streak-stats.herokuapp.com/?user=hordunlarmy&theme=radical&hide_border=false" alt="GitHub Streak Stats">
+      </div>
+    </div>
+  `;
 }
 
 function fortuneText(): string {
@@ -672,6 +705,52 @@ function packagesText(): string {
           </div>`;
         })
         .join("")}
+    </div>
+  `;
+}
+
+function cvDisplay(): string {
+  return `
+    <div class="text-ubuntu-white">
+      <div class="flex items-center mb-4">
+        <span class="text-ubuntu-orange text-2xl mr-3">📄</span>
+        <span class="text-ubuntu-orange font-bold text-xl">Curriculum Vitae</span>
+      </div>
+      
+      <div class="bg-ubuntu-dark rounded-lg p-4 border border-ubuntu-border">
+        <div class="mb-4">
+          <p class="text-ubuntu-white mb-2">
+            View my CV directly in the terminal below:
+          </p>
+        </div>
+        
+        <div class="w-full h-96 border border-ubuntu-border rounded-lg overflow-hidden">
+          <iframe 
+            src="./cv.pdf" 
+            width="100%" 
+            height="100%" 
+            class="border-0"
+            title="CV - Hordunlarmy"
+          >
+            <p class="text-ubuntu-yellow p-4">
+              Your browser doesn't support PDFs. 
+              <a href="./cv.pdf" target="_blank" class="text-ubuntu-cyan hover:text-ubuntu-yellow terminal-link">
+                Click here to download the PDF
+              </a>
+            </p>
+          </iframe>
+        </div>
+        
+        <div class="mt-4 flex items-center justify-between">
+          <div class="text-ubuntu-gray text-sm">
+            💡 Tip: You can also 
+            <a href="./cv.pdf" target="_blank" class="text-ubuntu-cyan hover:text-ubuntu-yellow terminal-link">
+              open in new tab
+            </a> 
+            for better viewing
+          </div>
+        </div>
+      </div>
     </div>
   `;
 }

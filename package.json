@@ -19,7 +19,14 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "docker:build": "docker build -t hordunlarmy.github.io .",
+    "docker:build:dev": "docker build -f Dockerfile.dev -t hordunlarmy.github.io:dev .",
+    "docker:run": "docker run -p 8050:8050 hordunlarmy.github.io",
+    "docker:run:dev": "docker run -p 3000:3000 -v $(pwd):/app -v /app/node_modules hordunlarmy.github.io:dev",
+    "docker:compose:dev": "docker-compose --profile dev up --build",
+    "docker:compose:prod": "docker-compose --profile prod up --build",
+    "docker:compose:dev-hot": "docker-compose --profile dev-hot up --build"
   },
   "eslintConfig": {
     "extends": [

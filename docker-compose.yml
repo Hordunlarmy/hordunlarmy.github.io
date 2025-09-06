@@ -1,0 +1,26 @@
+services:
+  app-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8050:8050"
+    environment:
+      - NODE_ENV=production
+
+  # Development with hot reload
+  app-dev-hot:
+    image: node:18-alpine
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+    command: sh -c "npm install && npm start"
+    profiles:
+      - dev-hot
+
