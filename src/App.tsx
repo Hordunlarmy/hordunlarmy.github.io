@@ -3,6 +3,7 @@ import Main from "./components/layout/Main";
 import TerminalContainer from "./components/terminal/TerminalContainer";
 import TopBar from "./components/layout/TopBar";
 import LockScreen from "./components/layout/LockScreen";
+import { sendUnlockNotification } from "./services/notificationService";
 
 const App = () => {
   const [isTerminalVisible, setIsTerminalVisible] = useState<boolean>(true);
@@ -17,15 +18,20 @@ const App = () => {
     setIsLocked(!isLocked);
   };
 
-  const handleUnlock = (unlockName: string) => {
+  const handleUnlock = async (unlockName: string) => {
+    // Send notification (runs in background, doesn't block unlock)
+    sendUnlockNotification(unlockName || "Anonymous").catch(console.error);
+    
     setUsername(unlockName || "user");
     setIsLocked(false);
   };
 
   return (
     <div
-      className="w-screen h-screen overflow-hidden bg-ubuntu bg-cover 
-        bg-center flex flex-col"
+      className="w-screen h-screen overflow-hidden ubuntu-background flex flex-col relative"
+      style={{
+        backgroundImage: `url(${process.env.PUBLIC_URL}/background.png)`
+      }}
     >
       <TopBar 
         onTerminalToggle={toggleTerminal} 
@@ -33,7 +39,7 @@ const App = () => {
         onLockToggle={toggleLock}
         isLocked={isLocked}
       />
-      <div className="flex-1 flex items-center justify-center p-6">
+      <div className="flex-1 flex items-center justify-center p-6 relative z-10">
         <Main>
           <TerminalContainer 
             isVisible={isTerminalVisible}

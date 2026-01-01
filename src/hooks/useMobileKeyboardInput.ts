@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { getCommandNames, getFolderNames } from "../const/commands";
 import { commandHistory } from "../classes/command-history";
 

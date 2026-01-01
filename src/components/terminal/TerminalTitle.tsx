@@ -1,11 +1,11 @@
 import { FC } from "react";
 import { BsTerminal } from "react-icons/bs";
 import { GrFormClose } from "react-icons/gr";
-import { directoryState } from "../../classes/directory-state";
 
 interface TerminalTitleProps {
   closeTerminal: () => void;
   username: string;
+  onMouseDown?: (e: React.MouseEvent) => void;
 }
 
 const TerminalTitle: FC<TerminalTitleProps> = (props) => {
@@ -15,6 +15,7 @@ const TerminalTitle: FC<TerminalTitleProps> = (props) => {
         text-ubuntu-gray font-segoe font-semibold flex items-center 
         justify-between py-2.5 px-4 border-b-2 border-solid border-black/[.4]
         select-none shadow-sm relative terminal-title cursor-move"
+      onMouseDown={props.onMouseDown}
     >
       <div className="text-base">
         <BsTerminal />

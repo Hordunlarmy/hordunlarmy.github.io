@@ -70,7 +70,7 @@ const packagesData = [
 
 const commands: Map<string, string> = new Map<string, string>();
 
-commands.set("motd", motdText());
+// motd is handled in getCommandByName to pass username dynamically
 commands.set("whoami", "whoami");
 commands.set("cat", "Here's a cute cat for you! 😊");
 commands.set("about", "about");
@@ -145,7 +145,7 @@ export const getCommandByName = (
         return "";
       }
       try {
-        const newPath = directoryState.changeDirectory(args[0]);
+        directoryState.changeDirectory(args[0]);
         return "";
       } catch (error) {
         return error instanceof Error ? error.message : "cd: unknown error";
@@ -177,6 +177,8 @@ export const getCommandByName = (
       return aboutText(username);
     case "whoami":
       return username;
+    case "motd":
+      return motdText(username);
   }
 
   // Check if it's a linkable item first
@@ -232,11 +234,11 @@ export const getFolderNames = (): string[] => {
   return ["projects", "APIs", "containers", "packages"];
 };
 
-export function motdText(): string {
+export function motdText(username: string = "user"): string {
   return `
     <div class="text-ubuntu-white">
       <div class="text-ubuntu-orange font-bold text-xl mb-4">
-        🌟 Welcome! 🌟
+        🌟 Welcome ${username}! 🌟
       </div>
       
       <div class="space-y-2">
@@ -245,14 +247,6 @@ export function motdText(): string {
           <span class="text-ubuntu-yellow">GitHub:</span>
           <a class="terminal-link ml-2 text-ubuntu-cyan hover:text-ubuntu-yellow" href="https://github.com/hordunlarmy" target="_blank" rel="noreferrer">
             https://github.com/hordunlarmy
-          </a>
-        </div>
-
-        <div class="flex items-center">
-          <span class="text-ubuntu-blue font-bold mr-2">💻</span>
-          <span class="text-ubuntu-yellow">Repo:</span>
-          <a class="terminal-link ml-2 text-ubuntu-cyan hover:text-ubuntu-yellow" href="https://github.com/hordunlarmy/hordunlarmy.github.io" target="_blank" rel="noreferrer">
-            https://github.com/hordunlarmy/hordunlarmy.github.io
           </a>
         </div>
       </div>

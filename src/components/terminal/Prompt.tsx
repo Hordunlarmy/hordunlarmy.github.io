@@ -1,6 +1,5 @@
 import { FC, useState, useCallback } from "react";
 import { getCommandNames } from "../../const/commands";
-import { directoryState } from "../../classes/directory-state";
 
 interface PromptProps {
   text: string;

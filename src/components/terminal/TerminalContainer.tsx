@@ -1,6 +1,6 @@
 import { useKeyboardInput } from "../../hooks/useKeyboardInput";
 import { useMobileKeyboardInput } from "../../hooks/useMobileKeyboardInput";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import Prompt from "./Prompt";
 import TerminalTitle from "./TerminalTitle";
 import { useScrollToBottom } from "../../hooks/useScrollToBottom";
@@ -95,25 +95,23 @@ const TerminalContainer: React.FC<TerminalContainerProps> = ({ isVisible, onClos
   // Mobile input handlers are now handled by the mobile keyboard hook
 
 
-  const handleMouseDown = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget || (e.target as HTMLElement).closest('.terminal-title')) {
-      setIsDragging(true);
-      setDragStart({ x: e.clientX - position.x, y: e.clientY - position.y });
-    }
+  const handleTitleMouseDown = (e: React.MouseEvent) => {
+    // Only allow dragging from the terminal title
+    setIsDragging(true);
+    setDragStart({ x: e.clientX - position.x, y: e.clientY - position.y });
+    e.preventDefault();
   };
 
-  const handleMouseMove = (e: MouseEvent) => {
-    if (isDragging) {
-      setPosition({
-        x: e.clientX - dragStart.x,
-        y: e.clientY - dragStart.y
-      });
-    }
-  };
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    setPosition({
+      x: e.clientX - dragStart.x,
+      y: e.clientY - dragStart.y
+    });
+  }, [dragStart]);
 
-  const handleMouseUp = () => {
+  const handleMouseUp = useCallback(() => {
     setIsDragging(false);
-  };
+  }, []);
 
   useEffect(() => {
     if (isDragging) {
@@ -124,7 +122,7 @@ const TerminalContainer: React.FC<TerminalContainerProps> = ({ isVisible, onClos
         document.removeEventListener('mouseup', handleMouseUp);
       };
     }
-  }, [isDragging, dragStart]);
+  }, [isDragging, dragStart, handleMouseMove, handleMouseUp]);
 
   return (
     <section
@@ -141,7 +139,6 @@ const TerminalContainer: React.FC<TerminalContainerProps> = ({ isVisible, onClos
         marginLeft: isMobile ? '2.5vw' : 'auto',
         marginRight: isMobile ? '2.5vw' : 'auto'
       }}
-      onMouseDown={handleMouseDown}
       tabIndex={0}
       onTouchStart={() => {
         // Focus the mobile input when touched on mobile
@@ -157,6 +154,7 @@ const TerminalContainer: React.FC<TerminalContainerProps> = ({ isVisible, onClos
       <TerminalTitle
         closeTerminal={onClose}
         username={username}
+        onMouseDown={handleTitleMouseDown}
       />
 
       <div
@@ -164,7 +162,7 @@ const TerminalContainer: React.FC<TerminalContainerProps> = ({ isVisible, onClos
           overflow-y-auto terminal-scrollbar
           ${isMobile ? 'overflow-x-hidden' : ''}`}
       >
-        {isMotdVisible && <ResultDiv text={motdText()} />}
+        {isMotdVisible && <ResultDiv text={motdText(username)} />}
 
         {prompts.map((prompt) => {
           return (

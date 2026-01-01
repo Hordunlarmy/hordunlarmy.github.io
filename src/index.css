@@ -187,3 +187,12 @@
 .project-other {
   @apply hover:underline text-ubuntu-cyan cursor-default whitespace-nowrap;
 }
+
+/* Ubuntu background with curves and crown */
+.ubuntu-background {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
