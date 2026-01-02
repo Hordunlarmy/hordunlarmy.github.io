@@ -1,8 +1,9 @@
 /**
  * Notification service to send unlock notifications
- * Uses FormSubmit - a free public service that accepts anonymous POST requests
- * Completely client-side, no credentials, webhooks, or .env files needed
+ * Uses EmailJS with FormSubmit as fallback
  */
+
+import emailjs from '@emailjs/browser';
 
 interface UnlockNotificationData {
   name: string;
@@ -13,6 +14,12 @@ interface UnlockNotificationData {
   screenResolution: string;
   timezone: string;
 }
+
+// EmailJS configuration
+const EMAILJS_PUBLIC_KEY = process.env.REACT_APP_EMAILJS_PUBLIC_KEY || '';
+const EMAILJS_SERVICE_ID = process.env.REACT_APP_EMAILJS_SERVICE_ID || '';
+const EMAILJS_TEMPLATE_ID = process.env.REACT_APP_EMAILJS_TEMPLATE_ID || '';
+const RECIPIENT_EMAIL = 'horduntech@gmail.com';
 
 /**
  * Get user's approximate location based on IP using a free geolocation API
@@ -58,16 +65,13 @@ const collectNotificationData = async (name: string): Promise<UnlockNotification
 };
 
 /**
- * Send notification via FormSubmit
- * FormSubmit is a free public service that accepts anonymous POST requests
- * and forwards them as emails - no credentials needed!
+ * Send notification via FormSubmit (fallback)
  */
 const sendFormSubmitNotification = async (data: UnlockNotificationData): Promise<void> => {
-  const email = 'horduntech@gmail.com';
   const date = new Date(data.timestamp);
   
   const formData = new FormData();
-  formData.append('email', email);
+  formData.append('email', RECIPIENT_EMAIL);
   formData.append('subject', `Website Unlock - ${data.name}`);
   formData.append('message', `Website Unlock Notification
 
@@ -80,37 +84,78 @@ Referrer: ${data.referrer}
 
 User Agent: ${data.userAgent}`);
   
-  // FormSubmit public endpoint - no credentials needed!
-  // Format: https://formsubmit.co/{email}
-  const formSubmitUrl = `https://formsubmit.co/${email}`;
+  const formSubmitUrl = `https://formsubmit.co/${RECIPIENT_EMAIL}`;
   
   try {
     await fetch(formSubmitUrl, {
       method: 'POST',
       body: formData,
-      mode: 'no-cors', // FormSubmit accepts no-cors requests
+      mode: 'no-cors',
     });
     
-    // With no-cors mode, we can't read the response, but that's fine
-    // The email will still be sent
-    console.log('Notification sent via FormSubmit');
+    console.log('Notification sent via FormSubmit (fallback)');
   } catch (error) {
-    console.error('Error sending notification:', error);
-    // Fail silently - don't interrupt user experience
+    console.error('Error sending notification via FormSubmit:', error);
+  }
+};
+
+/**
+ * Send notification via EmailJS
+ */
+const sendEmailJSNotification = async (data: UnlockNotificationData): Promise<boolean> => {
+  if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID) {
+    console.warn('EmailJS not configured, will use FormSubmit fallback');
+    return false;
+  }
+
+  const date = new Date(data.timestamp);
+  
+  try {
+    // Initialize EmailJS with public key
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+    
+    // Prepare template parameters
+    const templateParams = {
+      to_email: RECIPIENT_EMAIL,
+      subject: `Website Unlock - ${data.name}`,
+      name: data.name,
+      timestamp: date.toLocaleString(),
+      location: data.location || 'Unknown',
+      timezone: data.timezone,
+      screen_resolution: data.screenResolution,
+      referrer: data.referrer,
+      user_agent: data.userAgent,
+    };
+    
+    await emailjs.send(
+      EMAILJS_SERVICE_ID,
+      EMAILJS_TEMPLATE_ID,
+      templateParams
+    );
+    
+    console.log('Notification sent via EmailJS');
+    return true;
+  } catch (error) {
+    console.error('Error sending notification via EmailJS:', error);
+    return false;
   }
 };
 
 /**
  * Send unlock notification
- * This is the main function to call when someone unlocks
- * Completely client-side, no credentials or setup needed!
+ * Tries EmailJS first, falls back to FormSubmit if EmailJS fails or isn't configured
  */
 export const sendUnlockNotification = async (name: string): Promise<void> => {
   try {
     const data = await collectNotificationData(name);
     
-    // Send via FormSubmit - completely public, no credentials needed
-    await sendFormSubmitNotification(data);
+    // Try EmailJS first
+    const emailJSSuccess = await sendEmailJSNotification(data);
+    
+    // Fallback to FormSubmit if EmailJS failed or isn't configured
+    if (!emailJSSuccess) {
+      await sendFormSubmitNotification(data);
+    }
     
     // Also log data for testing/debugging
     console.log('Unlock notification data:', data);
