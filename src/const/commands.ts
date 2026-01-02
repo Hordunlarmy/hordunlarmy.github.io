@@ -241,6 +241,10 @@ export function motdText(username: string = "user"): string {
         🌟 Welcome ${username}! 🌟
       </div>
       
+      <div class="mb-4 text-ubuntu-gray leading-relaxed">
+        Hi, I'm Oluwatosin Bamgboye, a software engineer who enjoys building reliable backend systems and working with cloud and DevOps tools. I like solving real-world problems, improving system performance, and learning new technologies along the way.
+      </div>
+      
       <div class="space-y-2">
         <div class="flex items-center">
           <span class="text-ubuntu-green font-bold mr-2">📁</span>
